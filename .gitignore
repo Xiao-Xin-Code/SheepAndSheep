@@ -1,0 +1,13 @@
+﻿################################################################################
+# 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
+################################################################################
+
+/.vs/SheepAndSheep/v18
+/obj/Debug
+/.vs
+/Logs
+/Library
+/Temp
+/UserSettings
+/.vsconfig
+*.csproj

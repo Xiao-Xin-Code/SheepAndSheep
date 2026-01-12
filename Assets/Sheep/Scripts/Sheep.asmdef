@@ -1,0 +1,16 @@
+{
+    "name": "Sheep",
+    "rootNamespace": "",
+    "references": [
+        "GUID:72cb6963b76bf4c44a28bebbfcd96022"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

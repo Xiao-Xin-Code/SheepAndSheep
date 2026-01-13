@@ -7,6 +7,7 @@ namespace Sheep
 		protected override void Init()
 		{
 
+			RegisterSystem<PoolSystem>(new PoolSystem());
 		}
 	}
 }

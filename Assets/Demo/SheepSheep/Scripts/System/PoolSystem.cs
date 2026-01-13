@@ -1,4 +1,4 @@
-using QFramework;
+using QMVC;
 using UnityEngine;
 
 namespace SheepSheep
@@ -8,7 +8,7 @@ namespace SheepSheep
         Transform root;
 
         MonoPool<BlockController> blockPool;
-        MonoPool<AudioSource> audioSourcePool;
+        ComponentPool<AudioSource> audioSourcePool;
 
         protected override void OnInit()
         {
@@ -18,7 +18,7 @@ namespace SheepSheep
             Transform audioSources = new GameObject("audioSource").transform;
             audioSources.SetParent(root);
             blockPool = new MonoPool<BlockController>(Resources.Load<BlockController>("block"), blocks);
-            audioSourcePool = new MonoPool<AudioSource>(Resources.Load<AudioSource>("audioSource"), audioSources);
+            audioSourcePool = new ComponentPool<AudioSource>(Resources.Load<AudioSource>("audioSource"), audioSources);
         }
 
         public BlockController GetBlock()

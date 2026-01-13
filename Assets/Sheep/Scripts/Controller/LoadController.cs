@@ -16,7 +16,7 @@ namespace Sheep
         {
             GenerateCircularPath();
             _view.SheepTransform.position = path[0];
-            _view.SheepTransform.DOPath(path, duration).SetOptions(true).SetEase(Ease.Linear).OnUpdate(UpdateSheepDirection).OnComplete(() => gameObject.SetActive(false));
+            _view.SheepTransform.DOPath(path, duration).SetOptions(true).SetEase(Ease.Linear).SetLoops(-1).OnUpdate(UpdateSheepDirection);
         }
 
 
@@ -36,18 +36,22 @@ namespace Sheep
         void UpdateSheepDirection()
         {
             if (_view.SheepTransform == null) return;
+
             Vector3 currentPosition = _view.SheepTransform.position;
             Vector3 centerPosition = transform.position;
 
+            // 判断是否在左半圆（X坐标小于中心点）
             bool isInLeftHalf = currentPosition.y < centerPosition.y;
 
+            // 根据左右半圆设置水平翻转
             float targetScaleX = isInLeftHalf ? -1f : 1f;
 
+            // 应用水平翻转
             Vector3 currentScale = _view.SheepTransform.localScale;
-            _view.SheepTransform.localScale = new Vector3(targetScaleX * currentScale.x, currentScale.y, currentScale.z); //new Vector3(targetScaleX, currentPosition.y, currentPosition.z);
+            _view.SheepTransform.localScale = new Vector3(targetScaleX, currentScale.y, currentScale.z);
         }
 
-        
+
     }
 }
 

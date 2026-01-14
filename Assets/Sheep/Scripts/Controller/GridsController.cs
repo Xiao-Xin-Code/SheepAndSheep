@@ -21,10 +21,21 @@ namespace Sheep
         private void InitializeGrids(int width,int height,Vector2 center)
         {
             grids = new GridController[height][];
-            
 
+			float startY = height * 0.6f / 2 - 0.3f;
+			float startX = -width * 0.6f / 2 + 0.3f;
 
-        }
+			for (int h = 0; h < height; h++)
+			{
+				float curY = startY - h * 0.6f;
+				grids[h] = new GridController[width];
+				for (int w = 0; w < width; w++)
+				{
+					float curX = startX + w * 0.6f;
+					grids[h][w] = new GridController(new Vector2(curX, curY));
+				}
+			}
+		}
 
 
         /// <summary>

@@ -9,6 +9,22 @@ namespace Sheep
             this.SendEvent<InitLevelEvent>();
         }
     }
+
+    public class UnFoldMenuCommand : AbstractCommand
+    {
+        protected override void OnExecute()
+        {
+            this.SendEvent<UnFoldMenuEvent>();
+        }
+    }
+
+    public class JoinCommand : AbstractCommand
+    {
+        protected override void OnExecute()
+        {
+            
+        }
+    }
 }
 
 

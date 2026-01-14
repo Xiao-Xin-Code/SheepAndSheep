@@ -1,23 +1,29 @@
 using QMVC;
+using UnityEngine;
 
 namespace Sheep
 {
     public class HomeController : MonoController
     {
-        HomeView _view;
+        [SerializeField] HomeView _view;
 
 
         public override void Init()
         {
-            _view.RegisterBeginPressedEvent(OnBeginPressed);
+            _view.RegisterJoinPressedEvent(OnJoinPressed);
+            _view.RegisterMenuPressedEvent(OnMenuPressed);
         }
 
 
-        private void OnBeginPressed()
+        private void OnJoinPressed()
         {
             this.SendCommand<InitLevelCommand>();
         }
 
+        private void OnMenuPressed()
+        {
+            this.SendCommand<UnFoldMenuCommand>();
+        }
 
     }
 }

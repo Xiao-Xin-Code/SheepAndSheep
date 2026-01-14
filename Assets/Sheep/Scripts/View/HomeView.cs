@@ -6,24 +6,34 @@ namespace Sheep
 {
     public class HomeView : BaseView
     {
-        [SerializeField] Button begin;
-
+        [SerializeField] Button join;
+		[SerializeField] Button menu;
 
 
 		#region Register
 
-		public void RegisterBeginPressedEvent(UnityAction action)
+		public void RegisterJoinPressedEvent(UnityAction action)
 		{
-			begin?.onClick.AddListener(action);
+			join?.onClick.AddListener(action);
+		}
+
+		public void RegisterMenuPressedEvent(UnityAction action)
+		{
+			menu?.onClick.AddListener(action);
 		}
 
 		#endregion
 
 		#region UnRegister
 
-		public void UnRegisterBeginPressedEvent(UnityAction action)
+		public void UnRegisterJoinPressedEvent(UnityAction action)
 		{
-			begin?.onClick.RemoveListener(action);
+			join?.onClick.RemoveListener(action);
+		}
+
+		public void UnRegisterMenuPressedEvent(UnityAction action)
+		{
+			menu?.onClick.RemoveListener(action);
 		}
 
 		#endregion

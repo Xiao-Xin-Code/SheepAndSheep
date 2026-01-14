@@ -9,6 +9,7 @@ namespace Sheep
         [SerializeField] Button join;
 		[SerializeField] Button menu;
 
+		[SerializeField] GameObject mask;
 
 		#region Register
 
@@ -37,6 +38,12 @@ namespace Sheep
 		}
 
 		#endregion
+
+
+		public void MaskController(bool isOn)
+		{
+			mask.gameObject.SetActive(isOn);
+        }
 
 	}
 }

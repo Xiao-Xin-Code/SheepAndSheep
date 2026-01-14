@@ -22,7 +22,7 @@ namespace Sheep
     {
         protected override void OnExecute()
         {
-            
+            this.SendEvent<JoinEvent>();
         }
     }
 

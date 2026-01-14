@@ -30,6 +30,12 @@ namespace Sheep
 	}
 
 
+	public class JoinEvent
+	{
+
+	}
+
+
 	public class TransitionEvent
 	{
 

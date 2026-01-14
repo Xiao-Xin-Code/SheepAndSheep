@@ -17,7 +17,7 @@ namespace Sheep
 
         private void OnJoinPressed()
         {
-            this.SendCommand<InitLevelCommand>();
+            this.SendCommand<JoinCommand>();
         }
 
         private void OnMenuPressed()

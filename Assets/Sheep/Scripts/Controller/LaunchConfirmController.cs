@@ -1,3 +1,4 @@
+using QMVC;
 using UnityEngine;
 
 namespace Sheep
@@ -11,6 +12,15 @@ namespace Sheep
         {
             _view.RegisterLaunchPressedEvent(OnLaunchPressed);
             _view.RegisterClosePressedEvent(OnClosePressed);
+            this.RegisterEvent<JoinEvent>(JoinCallBack);
+
+            gameObject.SetActive(false);
+        }
+
+
+        private void JoinCallBack(JoinEvent evt)
+        {
+            gameObject.SetActive(true);
         }
 
 

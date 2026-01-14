@@ -57,11 +57,14 @@ namespace Sheep
         {
             while (true)
             {
+                if (_levelModel.isLevelOver)
+                {
+					_view.RectTransform.DOAnchorPosX(-2 * _view.RectTransform.rect.width, 2);
+                    break;
+				}
 				yield return 0;
-                //º”‘ÿÕÍ≥…
-                break;
             }
-            _view.RectTransform.DOAnchorPosX(-2 * _view.RectTransform.rect.width, 2);
+           
 		}
     }
 }

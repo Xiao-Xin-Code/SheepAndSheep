@@ -29,5 +29,11 @@ namespace Sheep
 
 	}
 
+
+	public class TransitionEvent
+	{
+
+	}
+
 }
 

@@ -25,6 +25,14 @@ namespace Sheep
             
         }
     }
+
+    public class TransitionCommand : AbstractCommand
+    {
+        protected override void OnExecute()
+        {
+            this.SendEvent<TransitionEvent>();
+        }
+    }
 }
 
 

@@ -85,16 +85,16 @@ namespace Sheep
 
 			grids = new GridController[height][];
 
-			float startY = height * 0.5f / 2;
-			float startX = -width * 0.5f / 2;
+			float startY = height * 0.6f / 2;
+			float startX = -width * 0.6f / 2;
 
 			for (int h = 0; h < height; h++)
 			{
-				float curY = startY - h * 0.5f;
+				float curY = startY - h * 0.6f;
 				grids[h] = new GridController[width];
 				for (int w = 0; w < width; w++)
 				{
-					float curX = startX + w * 0.5f;
+					float curX = startX + w * 0.6f;
 					grids[h][w] = new GridController(new Vector2(curX, curY));
                     //Transform temp = GameObject.Instantiate(block);
 					//temp.position = new Vector2(curX, curY);

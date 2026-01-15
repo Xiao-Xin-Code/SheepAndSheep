@@ -8,7 +8,8 @@ namespace Sheep
     public class ContainerController : MonoController
     {
         List<BlockController> vessel = new List<BlockController>();
-        [SerializeField] Vector2[] cells = new Vector2[8];
+
+        [SerializeField] ContainerView _view;
 
         PoolSystem _poolSystem;
         LevelSystem _levelSystem;
@@ -18,12 +19,6 @@ namespace Sheep
 			_poolSystem = this.GetSystem<PoolSystem>();
             _levelSystem = this.GetSystem<LevelSystem>();
             this.RegisterEvent<PlaceToContainerEvent>(PlaceToContainer);
-
-            float start = -3;
-            for(int i = 0; i < 7; i++)
-            {
-                cells[i] = transform.TransformPoint(new Vector3(start + i, 0, 0));
-			}
         }
 
         private void Place(BlockController block)
@@ -40,7 +35,7 @@ namespace Sheep
             }
             int insertIndex = sames.Count > 0 ? last + 1 : vessel.Count;
 
-            if (vessel.Count + 1 >= cells.Length) 
+            if (vessel.Count + 1 >= _view.Cells.Length) 
             {
                 //over
             }
@@ -59,8 +54,8 @@ namespace Sheep
                 }
             }
 
-            int curIndex = Mathf.Min(insertIndex, cells.Length - 1);
-            Tweener tweener = block.transform.DOMove(cells[curIndex], 2);
+            int curIndex = Mathf.Min(insertIndex, _view.Cells.Length - 1);
+            Tweener tweener = block.transform.DOMove(_view.Cells[curIndex].position, 2);
             tweener.onPlay = () =>
             {
                 if(sames.Count == 2)
@@ -68,8 +63,8 @@ namespace Sheep
                     for (int i = insertIndex - 2; i < vessel.Count; ++i) 
 					{
 						DOTween.Kill(vessel[i].transform);
-						int index = Mathf.Min(insertIndex + i + 1, cells.Length - 1);
-						vessel[i].transform.DOMove(cells[index], 1);
+						int index = Mathf.Min(insertIndex + i + 1, _view.Cells.Length - 1);
+						vessel[i].transform.DOMove(_view.Cells[index].position, 1);
 					}
 				}
                 else
@@ -77,7 +72,7 @@ namespace Sheep
                     for(int i = insertIndex + 1; i < vessel.Count; ++i)
                     {
                         DOTween.Kill(vessel[i].transform);
-                        vessel[i].transform.DOMove(cells[i], 1);
+                        vessel[i].transform.DOMove(_view.Cells[i].position, 1);
                     }
                 }
             };
@@ -97,8 +92,8 @@ namespace Sheep
 					for (int i = insertIndex - 2; i < vessel.Count; i++)
 					{
 						DOTween.Kill(vessel[i].transform);
-						int index = Mathf.Min(i, cells.Length - 1);
-						vessel[i].transform.DOMove(cells[index], 1);
+						int index = Mathf.Min(i, _view.Cells.Length - 1);
+						vessel[i].transform.DOMove(_view.Cells[index].position, 1);
 					}
 				}
 

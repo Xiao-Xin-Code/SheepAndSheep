@@ -36,8 +36,8 @@ namespace Sheep
 
 			InitializeGrids(_levelModel.width, _levelModel.height, _levelModel.center);
 
-            CreateHeadUpBlock(2, new Vector2Int(0, 0), new Vector2(0, -0.15f), 1);
-            CreateHeadUpBlock(2, new Vector2Int(0, 4), new Vector2(0, -0.15f), 1);
+            CreateHeadUpBlock(2, new Vector2Int(0, 0), new Vector2(0, 0.3f), 1);
+            CreateHeadUpBlock(2, new Vector2Int(0, 4), new Vector2(0, 0.3f), 1);
             //CreateHeadUpBlock(2, new Vector2Int(0, 8), new Vector2(0, -0.15f), 1);
             //CreateHeadUpBlock(2, new Vector2Int(4, 0), new Vector2(0, -0.15f), 1);
             //CreateHeadUpBlock(2, new Vector2Int(4, 4), new Vector2(0, -0.15f), 1);

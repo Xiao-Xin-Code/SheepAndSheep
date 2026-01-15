@@ -1,3 +1,5 @@
+using System;
+
 namespace Sheep
 {
 	/// <summary>
@@ -36,9 +38,29 @@ namespace Sheep
 	}
 
 
-	public class TransitionEvent
+	public class LaunchTransitionEvent
 	{
+		/// <summary>
+		/// ¸²¸ÇÍê³É
+		/// </summary>
+		public event Action overEvent;
 
+		public LaunchTransitionEvent(Action overEvent)
+		{
+			this.overEvent = overEvent;
+		}
+
+		public void Trigger() => overEvent?.Invoke();
+	}
+
+	public class RemoveInGridsEvent
+	{
+		public BlockController block;
+
+		public RemoveInGridsEvent(BlockController block)
+		{
+			this.block = block;
+		}
 	}
 
 }

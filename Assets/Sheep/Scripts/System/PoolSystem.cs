@@ -14,7 +14,7 @@ public class PoolSystem : AbstractSystem
 		poolRoot = new GameObject("Pools").transform;
 		Transform blockParent = new GameObject("Blocks").transform;
 		blockParent.SetParent(poolRoot);
-		blockPool = new MonoPool<BlockController>(Resources.Load<BlockController>(""), blockParent);
+		blockPool = new MonoPool<BlockController>(Resources.Load<BlockController>("Item"), blockParent);
     }
 
     protected override void OnDeinit()

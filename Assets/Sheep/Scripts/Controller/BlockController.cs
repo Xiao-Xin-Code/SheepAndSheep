@@ -1,3 +1,4 @@
+using QMVC;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -5,27 +6,11 @@ namespace Sheep
 {
 	public class BlockController : MonoController,IPointerClickHandler
 	{
-		#region UI
-		[SerializeField] SpriteRenderer bgRenderer;
-		[SerializeField] SpriteRenderer iconRenderer;
-		[SerializeField] SpriteRenderer maskRenderer;
-		#endregion
+		[SerializeField] BlockView _view;
+		BlockEntity _entity;
 
 		#region ÊôÐÔ
-		private bool interactable = true;
-
-		public bool Interactable
-		{
-			get
-			{
-				return interactable;
-			}
-			set
-			{
-				interactable = value;
-				maskRenderer.enabled = !value;
-			}
-		}
+		public bool interactable { get => _entity.Interactable.Value; set => _entity.Interactable.Value = value; }
 
 		public string Theme { get; set; }
 		public string Content { get; set; }
@@ -33,14 +18,27 @@ namespace Sheep
 		public Vector2Int[] OccupiedCells { get; set; }
 		#endregion
 
+
+		private void InteractableChanged(bool isOn)
+		{
+			_view.MaskRenderer.enabled = !isOn;
+		}
+
+
 		public override void Init()
 		{
-			
+			_entity = new BlockEntity();
+			_entity.Interactable.RegisterWithInitValue(InteractableChanged);
 		}
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            
+			Debug.Log("µã»÷");
+			if (interactable)
+			{
+				this.SendCommand(new RemoveInGridsCommand(this));
+				this.SendCommand(new PlaceToContainerCommand(this));
+			}
         }
     }
 

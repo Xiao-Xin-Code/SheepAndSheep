@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using QMVC;
 using UnityEngine;
 
 namespace Sheep
@@ -7,26 +8,25 @@ namespace Sheep
 	{
 		public GridController(Vector2 location)
 		{
-			blocks = new Stack<BlockController>();
+			blocks = new Stack<int>();
 			Location = location;
 		}
 
-		Stack<BlockController> blocks;
+		Stack<int> blocks;
 		public Vector2 Location { get; private set; }
 
 
-		public BlockController Peek()
+		public int Peek()
 		{
-			return blocks.Count == 0 ? null : blocks.Peek();
+			return blocks.Count > 0 ? blocks.Peek() : -1;
 		}
 
-		public void Push(BlockController block)
+		public void Push(int id)
 		{
-			if (block == null) return;
-			blocks.Push(block);
+			blocks.Push(id);
 		}
 
-		public BlockController Pop()
+		public int Pop()
 		{
 			return blocks.Pop();
 		}

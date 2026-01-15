@@ -7,15 +7,23 @@ namespace Sheep
 {
     public class ContainerController : MonoController
     {
-        Transform[] cells = new Transform[8];
         List<BlockController> vessel = new List<BlockController>();
+        [SerializeField] Vector2[] cells = new Vector2[8];
 
-        PoolSystem poolSystem;
+        PoolSystem _poolSystem;
+        LevelSystem _levelSystem;
 
         public override void Init()
         {
-            poolSystem = this.GetSystem<PoolSystem>();
+			_poolSystem = this.GetSystem<PoolSystem>();
+            _levelSystem = this.GetSystem<LevelSystem>();
             this.RegisterEvent<PlaceToContainerEvent>(PlaceToContainer);
+
+            float start = -3;
+            for(int i = 0; i < 7; i++)
+            {
+                cells[i] = transform.TransformPoint(new Vector3(start + i, 0, 0));
+			}
         }
 
         private void Place(BlockController block)
@@ -52,7 +60,7 @@ namespace Sheep
             }
 
             int curIndex = Mathf.Min(insertIndex, cells.Length - 1);
-            Tweener tweener = block.transform.DOMove(cells[curIndex].position, 2);
+            Tweener tweener = block.transform.DOMove(cells[curIndex], 2);
             tweener.onPlay = () =>
             {
                 if(sames.Count == 2)
@@ -61,7 +69,7 @@ namespace Sheep
 					{
 						DOTween.Kill(vessel[i].transform);
 						int index = Mathf.Min(insertIndex + i + 1, cells.Length - 1);
-						vessel[i].transform.DOMove(cells[index].position, 1);
+						vessel[i].transform.DOMove(cells[index], 1);
 					}
 				}
                 else
@@ -69,7 +77,7 @@ namespace Sheep
                     for(int i = insertIndex + 1; i < vessel.Count; ++i)
                     {
                         DOTween.Kill(vessel[i].transform);
-                        vessel[i].transform.DOMove(cells[i].position, 1);
+                        vessel[i].transform.DOMove(cells[i], 1);
                     }
                 }
             };
@@ -80,19 +88,33 @@ namespace Sheep
                     foreach (var item in sames) 
                     {
                         //回收
-                        poolSystem.RecycleBlock(item);
+                        _poolSystem.RecycleBlock(item);
 					}
                     //回收
-                    poolSystem.RecycleBlock(block);
+                    _poolSystem.RecycleBlock(block);
                     sames.Clear();
 
 					for (int i = insertIndex - 2; i < vessel.Count; i++)
 					{
 						DOTween.Kill(vessel[i].transform);
 						int index = Mathf.Min(i, cells.Length - 1);
-						vessel[i].transform.DOMove(cells[index].position, 1);
+						vessel[i].transform.DOMove(cells[index], 1);
 					}
 				}
+
+                if (!_levelSystem.HasBlocks()) 
+                {
+                    if (vessel.Count == 0)
+                    {
+                        //成功
+                        Debug.Log("成功");
+                    }
+                    else
+                    {
+						//失败
+						Debug.Log("失败");
+					}
+                }
             };
         }
 

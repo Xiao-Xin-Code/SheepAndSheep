@@ -26,11 +26,17 @@ namespace Sheep
 
         private void OnLaunchPressed()
         {
-            
-            gameObject.SetActive(false);
+            this.SendCommand(new LaunchTransitionCommand(Hide));
+            this.SendCommand<InitLevelCommand>();
         }
 
         private void OnClosePressed()
+        {
+            gameObject.SetActive(false);
+        }
+
+
+        private void Hide()
         {
             gameObject.SetActive(false);
         }

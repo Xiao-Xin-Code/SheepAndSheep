@@ -11,3 +11,6 @@
 /UserSettings
 /.vsconfig
 *.csproj
+/Assembly-CSharp.csproj
+/QMVCFramework.csproj
+/SheepAndSheep.sln

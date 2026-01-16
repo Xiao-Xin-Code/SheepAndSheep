@@ -27,7 +27,7 @@ namespace Sheep
         private void OnLaunchPressed()
         {
             this.SendCommand(new LaunchTransitionCommand(Hide));
-            this.SendCommand<InitLevelCommand>();
+            this.SendCommand<LaunchLevelCommand>();
         }
 
         private void OnClosePressed()

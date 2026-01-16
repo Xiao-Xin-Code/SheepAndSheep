@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Sheep
 {
-    public class GridsController : BaseController
+    public class GridsController : MonoController
     {
         GridController[][] grids;
 
@@ -11,34 +11,27 @@ namespace Sheep
         LevelSystem _levelSystem;
         PoolSystem _poolSystem;
 
-
-        public GridsController()
-        {
+		public override void Init()
+		{
 			_levelModel = this.GetModel<LevelModel>();
-            _levelSystem = this.GetSystem<LevelSystem>();
+			_levelSystem = this.GetSystem<LevelSystem>();
 			_poolSystem = this.GetSystem<PoolSystem>();
-            _levelModel.width = 20;
-            _levelModel.height = 20;
+			_levelModel.width = 20;
+			_levelModel.height = 20;
 			this.RegisterEvent<InitLevelEvent>(OnInitLevel);
-            this.RegisterEvent<RemoveInGridsEvent>(OnRemoveInGrids);
+			this.RegisterEvent<RemoveInGridsEvent>(OnRemoveInGrids);
 		}
 
 
-        private void OnInitLevel(InitLevelEvent evt)
+		private void OnInitLevel(InitLevelEvent evt)
         {
             Debug.Log("初始化");
-            //获取数量，
-            //随机种类
-            //确定种类包含的数量
-            //设置实际效果
-
-
 
 			InitializeGrids(_levelModel.width, _levelModel.height, _levelModel.center);
 
             CreateHeadUpBlock(2, new Vector2Int(0, 0), new Vector2(0, 0.3f), 1);
             CreateHeadUpBlock(2, new Vector2Int(0, 4), new Vector2(0, 0.3f), 1);
-            //CreateHeadUpBlock(2, new Vector2Int(0, 8), new Vector2(0, -0.15f), 1);
+            CreateHeadUpBlock(2, new Vector2Int(0, 8), new Vector2(0, 0.3f), 1);
             //CreateHeadUpBlock(2, new Vector2Int(4, 0), new Vector2(0, -0.15f), 1);
             //CreateHeadUpBlock(2, new Vector2Int(4, 4), new Vector2(0, -0.15f), 1);
             //CreateHeadUpBlock(2, new Vector2Int(4, 8), new Vector2(0, -0.15f), 1);
@@ -47,6 +40,7 @@ namespace Sheep
             //CreateHeadUpBlock(2, new Vector2Int(8, 8), new Vector2(0, -0.15f), 1);
 
 
+            _levelSystem.UpdateBlock();
             _levelModel.isLevelOver = true;
 		}
 
@@ -56,23 +50,8 @@ namespace Sheep
             Remove(evt.block);
 		}
 
-        private void Refresh()
-        {
-            int total = 0;
-            int[] types = new int[7] { 0, 0, 0, 0, 0, 0, 0 };
-
-            while (total < _levelModel.blockCount)
-            {
-                int index = Random.Range(0, 7);
-                types[index] += 3;
-                total += 3;
-            }
-
-            Random.Range(4, 8);
-        }
 
         int id = 0;
-
         /// <summary>
         /// 初始化底盘
         /// </summary>
@@ -99,7 +78,6 @@ namespace Sheep
                     //Transform temp = GameObject.Instantiate(block);
 					//temp.position = new Vector2(curX, curY);
 				}
-
 			}
 		}
 
@@ -111,17 +89,19 @@ namespace Sheep
         private void Place(BlockController block,int deep)
         {
             Vector2 position = Vector2.zero;
-            foreach (var item in block.OccupiedCells) 
+			int id = this.id++;//获取ID
+			foreach (var item in block.OccupiedCells) 
             {
                 GridController grid = grids[item.x][item.y];
                 BlockController temp = _levelSystem.GetBlock(grid.Peek());
 				if (temp != null) temp.interactable = false;
-                int id = this.id++;//获取ID
+               
                 grid.Push(id);
-                _levelSystem.AddBlock(id, block);
+               
 				position += grid.Location;
 			}
-            position /= 4;
+			_levelSystem.AddBlock(id, block);
+			position /= 4;
             block.transform.position = new Vector3(position.x, position.y, deep);
         }
 
@@ -180,7 +160,6 @@ namespace Sheep
 						startCoord + new Vector2Int(i * 2,j * 2) + new Vector2Int(1,0),
 						startCoord + new Vector2Int(i * 2,j * 2) + new Vector2Int(1,1)
 					};
-
                     Place(block, deep);
 				}
 			}
@@ -212,7 +191,7 @@ namespace Sheep
 				block.transform.position += dur * (count - 1 - i);
 			}
 		}
-	}
+    }
 }
 
 

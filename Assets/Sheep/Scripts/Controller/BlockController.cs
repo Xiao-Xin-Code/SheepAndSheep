@@ -8,12 +8,14 @@ namespace Sheep
 	{
 		[SerializeField] BlockView _view;
 		BlockEntity _entity;
+		LevelSystem _levelSystem;
 
 		#region ÊôÐÔ
 		public bool interactable { get => _entity.Interactable.Value; set => _entity.Interactable.Value = value; }
 
-		public string Theme { get; set; }
-		public string Content { get; set; }
+		public string theme { get => _entity.theme; set => _entity.theme = value; }
+
+		public string content { get => _entity.content; set => _entity.content = value; }
 
 		public Vector2Int[] OccupiedCells { get; set; }
 		#endregion
@@ -24,11 +26,19 @@ namespace Sheep
 			_view.MaskRenderer.enabled = !isOn;
 		}
 
+		public void UpdateIcon()
+		{
+			Debug.Log("Ìæ»»£º" + _levelSystem.GetIcon(_entity.content));
+			_view.IconRenderer.sprite = _levelSystem.GetIcon(_entity.content);
+		}
+
 
 		public override void Init()
 		{
 			_entity = new BlockEntity();
 			_entity.Interactable.RegisterWithInitValue(InteractableChanged);
+
+			_levelSystem = this.GetSystem<LevelSystem>();
 		}
 
         public void OnPointerClick(PointerEventData eventData)
@@ -46,7 +56,7 @@ namespace Sheep
 	{
 		public static bool TypeEquals(this BlockController self, BlockController other)
 		{
-			return self.Theme == other.Theme && self.Content == other.Content;
+			return self.theme == other.theme && self.content == other.content;
 		}
 	}
 }

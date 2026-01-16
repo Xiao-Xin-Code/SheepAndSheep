@@ -53,6 +53,13 @@ namespace Sheep
 		public void Trigger() => overEvent?.Invoke();
 	}
 
+	public class LaunchLevelEvent
+	{
+
+	}
+
+
+
 	public class RemoveInGridsEvent
 	{
 		public BlockController block;

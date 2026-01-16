@@ -54,6 +54,14 @@ namespace Sheep
         }
     }
 
+    public class LaunchLevelCommand : AbstractCommand
+    {
+        protected override void OnExecute()
+        {
+            this.SendEvent<LaunchLevelEvent>();
+        }
+    }
+
 
     public class BlockClickCommand : AbstractCommand
     {

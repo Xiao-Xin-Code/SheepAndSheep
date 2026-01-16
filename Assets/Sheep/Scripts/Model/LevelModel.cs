@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using QMVC;
 using UnityEngine;
 
@@ -7,10 +6,10 @@ namespace Sheep
     public class LevelModel : AbstractModel
     {
         public bool isLevelOver = false;
+        public BindableProperty<string> Theme = new BindableProperty<string>();
+
 
         public int blockCount;
-        public List<int> types;
-
         public int width;
         public int height;
         public Vector2 center;

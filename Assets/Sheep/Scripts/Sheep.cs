@@ -1,19 +1,17 @@
 using QMVC;
-using UnityEngine;
 
 namespace Sheep
 {
 	public class Sheep : Architecture<Sheep>
 	{
-		GridsController gridsController;
-
 		protected override void Init()
 		{
+			RegisterModel<DataModel>(new DataModel());
+			RegisterSystem<AssetSystem>(new AssetSystem());
 			RegisterModel<LevelModel>(new LevelModel());
 			RegisterSystem<PoolSystem>(new PoolSystem());
+			RegisterSystem<AudioSystem>(new AudioSystem());
 			RegisterSystem<LevelSystem>(new LevelSystem());
-
-			gridsController = new GridsController();
 		}
 	}
 }

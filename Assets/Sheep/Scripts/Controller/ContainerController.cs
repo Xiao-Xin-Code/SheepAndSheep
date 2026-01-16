@@ -38,6 +38,8 @@ namespace Sheep
             if (vessel.Count + 1 >= _view.Cells.Length) 
             {
                 //over
+
+                return;
             }
             else
             {
@@ -97,17 +99,25 @@ namespace Sheep
 					}
 				}
 
-                if (!_levelSystem.HasBlocks()) 
+                if(DOTween.TotalPlayingTweens() == 0)
                 {
-                    if (vessel.Count == 0)
+                    if(vessel.Count == _view.Cells.Length)
                     {
-                        //成功
-                        Debug.Log("成功");
+                        Debug.Log("失败");
                     }
                     else
                     {
-						//失败
-						Debug.Log("失败");
+                        if (!_levelSystem.HasBlocks())
+                        {
+                            if(vessel.Count == 0)
+                            {
+								Debug.Log("成功");
+							}
+                            else
+                            {
+                                Debug.Log("失败");
+                            }
+                        }
 					}
                 }
             };

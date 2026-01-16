@@ -31,7 +31,6 @@ namespace Sheep
 			_view.RectTransform.DOAnchorPosX(-_view.RectTransform.rect.width, 1).SetEase(Ease.Linear).OnComplete(() =>
 			{
                 evt.Trigger();
-
 				if (_levelModel.isLevelOver)
 				{
 					TransitionEnd();

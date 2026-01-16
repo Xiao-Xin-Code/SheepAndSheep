@@ -1,8 +1,9 @@
 namespace Frame
 {
-    using UnityEngine.Events;
     using System.Collections;
     using UnityEngine;
+    using UnityEngine.Events;
+    using UnityEngine.UI;
 
     /// <summary>
     /// Mono业务逻辑管理单例
@@ -32,6 +33,14 @@ namespace Frame
                 MonoRuntime.Instance.StopCoroutine(routine);
             }
         }
+
+        public void StopCoroutine(Coroutine coroutine)
+        {
+			if (coroutine != null)
+			{
+				MonoRuntime.Instance.StopCoroutine(coroutine);
+			}
+		}
 
         public void StopAllCoroutines()
         {

@@ -9,6 +9,7 @@ namespace Sheep
 		[SerializeField] BlockView _view;
 		BlockEntity _entity;
 		LevelSystem _levelSystem;
+		AssetSystem _assetSystem;
 
 		#region ÊôÐÔ
 		public bool interactable { get => _entity.Interactable.Value; set => _entity.Interactable.Value = value; }
@@ -28,8 +29,8 @@ namespace Sheep
 
 		public void UpdateIcon()
 		{
-			Debug.Log("Ìæ»»£º" + _levelSystem.GetIcon(_entity.content));
-			_view.IconRenderer.sprite = _levelSystem.GetIcon(_entity.content);
+			Debug.Log("Ìæ»»£º" + _assetSystem.GetIcon(_entity.content));
+			_view.IconRenderer.sprite = _assetSystem.GetIcon(_entity.content);
 		}
 
 
@@ -37,7 +38,7 @@ namespace Sheep
 		{
 			_entity = new BlockEntity();
 			_entity.Interactable.RegisterWithInitValue(InteractableChanged);
-
+			_assetSystem = this.GetSystem<AssetSystem>();
 			_levelSystem = this.GetSystem<LevelSystem>();
 		}
 

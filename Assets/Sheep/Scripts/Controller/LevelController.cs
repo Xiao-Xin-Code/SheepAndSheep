@@ -8,6 +8,7 @@ namespace Sheep
     {
 		LevelModel _levelModel;
         LevelSystem _levelSystem;
+		AssetSystem _assetSystem;
 
         public override void Init()
         {
@@ -40,7 +41,7 @@ namespace Sheep
 			foreach (var item in icons)
 			{
 				Debug.Log("添加：" + item);
-				_levelSystem.AddIcon(item.name, item);
+				_assetSystem.AddIcon(item.name, item);
 			}
 		}
 

@@ -1,14 +1,14 @@
 using QMVC;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Sheep
 {
     public class LoadView : BaseView
     {
-        [SerializeField] Image progress;
+        [SerializeField] RectTransform progress;
         [SerializeField] RectTransform sheepTransform;
 
+        public RectTransform Progress => progress;
         public RectTransform SheepTransform => sheepTransform;
 
     }

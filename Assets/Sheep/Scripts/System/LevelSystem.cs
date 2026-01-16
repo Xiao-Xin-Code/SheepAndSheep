@@ -13,8 +13,6 @@ namespace Sheep
         private List<string> blockTypes = new List<string>();
 
 		LevelModel _levelModel;
-		DataModel _dataModel;
-		AssetSystem _assetSystem;
 
         protected override void OnInit()
         {

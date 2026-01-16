@@ -13,8 +13,6 @@ namespace Sheep
 
 
 
-        DataModel _dataModel;
-
 		protected override void OnInit()
         {
             sfx = Resources.Load<SFXController>("SFX");

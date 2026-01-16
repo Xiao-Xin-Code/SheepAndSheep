@@ -1,3 +1,4 @@
+using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 
@@ -12,12 +13,14 @@ namespace Sheep
 		float duration = 5;
 		private Vector3[] path;
 
+        Coroutine coroutine;
+
         public override void Init()
         {
             GenerateCircularPath();
-            _view.SheepTransform.position = path[0];
-            _view.SheepTransform.DOPath(path, duration).SetOptions(true).SetEase(Ease.Linear).SetLoops(-1).OnUpdate(UpdateSheepDirection);
-        }
+            BeginProgress();
+
+		}
 
 
         void GenerateCircularPath()
@@ -31,7 +34,6 @@ namespace Sheep
                 path[i] = transform.TransformPoint(new Vector3(x, y, 0));
             }
         }
-
 
         void UpdateSheepDirection()
         {
@@ -51,6 +53,38 @@ namespace Sheep
             _view.SheepTransform.localScale = new Vector3(targetScaleX, currentScale.y, currentScale.z);
         }
 
+        void Loat()
+        {
+            _view.Progress.DOSizeDelta(new Vector2(1000, 60), 3);
+            //_view.Progress.rect.width;
+
+		}
+
+
+        void BeginProgress()
+        {
+            DOTween.Kill(_view.SheepTransform);
+			_view.SheepTransform.position = path[0];
+			_view.SheepTransform.DOPath(path, duration).SetOptions(true).SetEase(Ease.Linear).SetLoops(-1).OnUpdate(UpdateSheepDirection);
+			if (coroutine != null)
+            {
+                StopCoroutine(coroutine);
+            }
+            coroutine = StartCoroutine(LoadProgress());
+        }
+
+
+
+        IEnumerator LoadProgress()
+        {
+            while (_view.Progress.rect.width < 1000) 
+            {
+                _view.Progress.sizeDelta += new Vector2(100, 0) * Time.deltaTime;
+				yield return null;
+			}
+
+            gameObject.SetActive(false);
+        }
 
     }
 }

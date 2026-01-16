@@ -79,7 +79,7 @@ namespace Sheep
         {
             while (_view.Progress.rect.width < 1000) 
             {
-                _view.Progress.sizeDelta += new Vector2(100, 0) * Time.deltaTime;
+                _view.Progress.sizeDelta += new Vector2(200, 0) * Time.deltaTime;
 				yield return null;
 			}
 

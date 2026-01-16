@@ -14,6 +14,7 @@ namespace Sheep
         {
 			_levelModel = this.GetModel<LevelModel>();
             _levelSystem = this.GetSystem<LevelSystem>();
+			_assetSystem = this.GetSystem<AssetSystem>();
 			this.RegisterEvent<LaunchLevelEvent>(OnLaunchLevel);
 		}
 

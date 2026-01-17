@@ -7,13 +7,11 @@ namespace Sheep
     {
         [SerializeField] HomeView _view;
 
-
         public override void Init()
         {
             _view.RegisterJoinPressedEvent(OnJoinPressed);
             _view.RegisterMenuPressedEvent(OnMenuPressed);
         }
-
 
         private void OnJoinPressed()
         {

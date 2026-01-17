@@ -9,7 +9,7 @@ namespace Sheep
     {
         public BlockController block;
         public SFXController sfx;
-		private Dictionary<string, Sprite> themeIcons = new Dictionary<string, Sprite>();
+		private Dictionary<string, Sprite> themeIcons;
 		string[] levelPaths;
 
 		DataModel _dataModel;
@@ -18,13 +18,13 @@ namespace Sheep
         {
 			_dataModel = this.GetModel<DataModel>();
 
-            sfx = Resources.Load<SFXController>("SFX");
+			_dataModel.Theme.RegisterWithInitValue(OnThemeChanged);
+
+			sfx = Resources.Load<SFXController>("SFX");
             block = Resources.Load<BlockController>("Item");
 
 			string levelPath = Application.streamingAssetsPath + "/Level";
 			levelPaths = Directory.GetFiles(levelPath,"*.txt");
-
-			_dataModel.Theme.RegisterWithInitValue(OnThemeChanged);
 		}
 
 		/// <summary>
@@ -52,7 +52,6 @@ namespace Sheep
 		}
 
 		#endregion
-
 
 		#region 图标数据操作
 

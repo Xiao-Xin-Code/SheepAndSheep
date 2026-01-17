@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using QMVC;
 using UnityEngine;
 
 namespace Sheep
@@ -11,10 +10,11 @@ namespace Sheep
 			blocks = new Stack<int>();
 			Location = location;
 		}
-
 		Stack<int> blocks;
+
 		public Vector2 Location { get; private set; }
 
+		#region Êý¾Ý²Ù×÷
 
 		public int Peek()
 		{
@@ -30,6 +30,9 @@ namespace Sheep
 		{
 			return blocks.Pop();
 		}
+
+		#endregion
+
 	}
 }
 

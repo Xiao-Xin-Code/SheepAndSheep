@@ -8,9 +8,10 @@ namespace Sheep
 		{
 			RegisterModel<DataModel>(new DataModel());
 			RegisterSystem<AssetSystem>(new AssetSystem());
-			RegisterModel<LevelModel>(new LevelModel());
 			RegisterSystem<PoolSystem>(new PoolSystem());
 			RegisterSystem<AudioSystem>(new AudioSystem());
+			
+			RegisterModel<LevelModel>(new LevelModel());
 			RegisterSystem<LevelSystem>(new LevelSystem());
 		}
 	}

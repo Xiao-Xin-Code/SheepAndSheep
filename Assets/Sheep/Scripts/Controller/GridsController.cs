@@ -16,8 +16,6 @@ namespace Sheep
 			_levelModel = this.GetModel<LevelModel>();
 			_levelSystem = this.GetSystem<LevelSystem>();
 			_poolSystem = this.GetSystem<PoolSystem>();
-			_levelModel.width = 20;
-			_levelModel.height = 20;
 			this.RegisterEvent<InitLevelEvent>(OnInitLevel);
 			this.RegisterEvent<RemoveInGridsEvent>(OnRemoveInGrids);
 		}
@@ -26,23 +24,36 @@ namespace Sheep
 		private void OnInitLevel(InitLevelEvent evt)
         {
             Debug.Log("初始化");
-
 			InitializeGrids(_levelModel.width, _levelModel.height, _levelModel.center);
 
-            CreateHeadUpBlock(2, new Vector2Int(0, 0), new Vector2(0, 0.3f), 1);
-            CreateHeadUpBlock(2, new Vector2Int(0, 4), new Vector2(0, 0.3f), 1);
-            CreateHeadUpBlock(2, new Vector2Int(0, 8), new Vector2(0, 0.3f), 1);
-            //CreateHeadUpBlock(2, new Vector2Int(4, 0), new Vector2(0, -0.15f), 1);
-            //CreateHeadUpBlock(2, new Vector2Int(4, 4), new Vector2(0, -0.15f), 1);
-            //CreateHeadUpBlock(2, new Vector2Int(4, 8), new Vector2(0, -0.15f), 1);
-            //CreateHeadUpBlock(2, new Vector2Int(8, 0), new Vector2(0, -0.15f), 1);
-            //CreateHeadUpBlock(2, new Vector2Int(8, 4), new Vector2(0, -0.15f), 1);
-            //CreateHeadUpBlock(2, new Vector2Int(8, 8), new Vector2(0, -0.15f), 1);
-
+            for(int i = 1; i < _levelModel.level.Length; i++)
+            {
+                LevelBlock(_levelModel.level[i]);
+			}
 
             _levelSystem.UpdateBlock();
             _levelModel.isLevelOver = true;
 		}
+
+
+        private void CreateLevelBlock(string areadata)
+        {
+            string[] split = areadata.Split('#');
+            string[] data = split[1].Split('|');
+            switch (split[0])
+            {
+                case "1":
+                    string[] v2Int = data[1].Split(',');
+                    string[] v2 = data[2].Split(',');
+                    CreateHeadUpBlock(int.Parse(data[0]), new Vector2Int(int.Parse(v2Int[0]), int.Parse(v2Int[1])), new Vector2(float.Parse(v2[0]), float.Parse(v2[1])), int.Parse(data[3]));
+					break;
+                case "2":
+                    v2Int = data[0].Split(',');
+                    v2Int = data[1].Split(',');
+                    CreateSpecifiedBlock(int.Parse(v2Int[0]), int.Parse(v2Int[1]), new Vector2Int(int.Parse(v2Int[0]), int.Parse(v2Int[1])), int.Parse(data[2]));
+					break;
+            }
+        }
 
 
         private void OnRemoveInGrids(RemoveInGridsEvent evt)
@@ -51,15 +62,17 @@ namespace Sheep
 		}
 
 
-        int id = 0;
-        /// <summary>
-        /// 初始化底盘
-        /// </summary>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="center"></param>
-        private void InitializeGrids(int width,int height,Vector2 center)
-        {
+		#region Grids操作方法
+
+		int id = 0;
+		/// <summary>
+		/// 初始化底盘
+		/// </summary>
+		/// <param name="width"></param>
+		/// <param name="height"></param>
+		/// <param name="center"></param>
+		private void InitializeGrids(int width, int height, Vector2 center)
+		{
 			Transform block = Resources.Load<Transform>("Grid");
 
 			grids = new GridController[height][];
@@ -75,77 +88,81 @@ namespace Sheep
 				{
 					float curX = startX + w * 0.6f;
 					grids[h][w] = new GridController(new Vector2(curX, curY));
-                    //Transform temp = GameObject.Instantiate(block);
+					//Transform temp = GameObject.Instantiate(block);
 					//temp.position = new Vector2(curX, curY);
 				}
 			}
 		}
 
-
-        /// <summary>
-        /// 放置指定
-        /// </summary>
-        /// <param name="block"></param>
-        private void Place(BlockController block,int deep)
-        {
-            Vector2 position = Vector2.zero;
+		/// <summary>
+		/// 放置指定
+		/// </summary>
+		/// <param name="block"></param>
+		private void Place(BlockController block, int deep)
+		{
+			Vector2 position = Vector2.zero;
 			int id = this.id++;//获取ID
-			foreach (var item in block.OccupiedCells) 
-            {
-                GridController grid = grids[item.x][item.y];
-                BlockController temp = _levelSystem.GetBlock(grid.Peek());
+			foreach (var item in block.OccupiedCells)
+			{
+				GridController grid = grids[item.x][item.y];
+				BlockController temp = _levelSystem.GetBlock(grid.Peek());
 				if (temp != null) temp.interactable = false;
-               
-                grid.Push(id);
-               
+
+				grid.Push(id);
+
 				position += grid.Location;
 			}
 			_levelSystem.AddBlock(id, block);
 			position /= 4;
-            block.transform.position = new Vector3(position.x, position.y, deep);
-        }
+			block.transform.position = new Vector3(position.x, position.y, deep);
+		}
 
-        /// <summary>
-        /// 移除指定
-        /// </summary>
-        /// <param name="block"></param>
-        private void Remove(BlockController block)
-        {
-            foreach (var item in block.OccupiedCells) 
-            {
-                int id = grids[item.x][item.y].Pop();
-                _levelSystem.RemoveBlock(id);
-                GridController grid = grids[item.x][item.y];
-                BlockController temp = _levelSystem.GetBlock(grid.Peek());
+		/// <summary>
+		/// 移除指定
+		/// </summary>
+		/// <param name="block"></param>
+		private void Remove(BlockController block)
+		{
+			foreach (var item in block.OccupiedCells)
+			{
+				int id = grids[item.x][item.y].Pop();
+				_levelSystem.RemoveBlock(id);
+				GridController grid = grids[item.x][item.y];
+				BlockController temp = _levelSystem.GetBlock(grid.Peek());
 				if (temp != null) temp.interactable = CheckInteractable(temp);
-            }
-        }
+			}
+		}
 
-        /// <summary>
-        /// 检查交互性
-        /// </summary>
-        /// <param name="block"></param>
-        /// <returns></returns>
+		/// <summary>
+		/// 检查交互性
+		/// </summary>
+		/// <param name="block"></param>
+		/// <returns></returns>
+		private bool CheckInteractable(BlockController block)
+		{
+			foreach (var item in block.OccupiedCells)
+			{
+				BlockController temp = _levelSystem.GetBlock(grids[item.x][item.y].Peek());
+				if (temp != block) return false;
+			}
+			return true;
 
-        private bool CheckInteractable(BlockController block)
-        {
-            foreach (var item in block.OccupiedCells) 
-            {
-                BlockController temp = _levelSystem.GetBlock(grids[item.x][item.y].Peek());
-                if (temp != block) return false;
-            }
-            return true;
+		}
 
-        }
+		#endregion
 
-        /// <summary>
-        /// 指定范围区块
-        /// </summary>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="startCoord"></param>
-        /// <param name="deep"></param>
-		public void CreateSpecifiedBlock(int width, int height, Vector2Int startCoord, int deep)
+
+
+		#region 区域创建方法
+
+		/// <summary>
+		/// 指定范围区块
+		/// </summary>
+		/// <param name="width"></param>
+		/// <param name="height"></param>
+		/// <param name="startCoord"></param>
+		/// <param name="deep"></param>
+		private void CreateSpecifiedBlock(int width, int height, Vector2Int startCoord, int deep)
 		{
 			for (int i = 0; i < width; i++)
 			{
@@ -160,19 +177,19 @@ namespace Sheep
 						startCoord + new Vector2Int(i * 2,j * 2) + new Vector2Int(1,0),
 						startCoord + new Vector2Int(i * 2,j * 2) + new Vector2Int(1,1)
 					};
-                    Place(block, deep);
+					Place(block, deep);
 				}
 			}
 		}
 
-        /// <summary>
-        /// 单一重叠区块
-        /// </summary>
-        /// <param name="count"></param>
-        /// <param name="startCoord"></param>
-        /// <param name="dur"></param>
-        /// <param name="startDeep"></param>
-		public void CreateHeadUpBlock(int count, Vector2Int startCoord, Vector3 dur, int startDeep)
+		/// <summary>
+		/// 单一重叠区块
+		/// </summary>
+		/// <param name="count"></param>
+		/// <param name="startCoord"></param>
+		/// <param name="dur"></param>
+		/// <param name="startDeep"></param>
+		private void CreateHeadUpBlock(int count, Vector2Int startCoord, Vector3 dur, int startDeep)
 		{
 			for (int i = 0; i < count; i++)
 			{
@@ -187,11 +204,14 @@ namespace Sheep
 
 				block.interactable = true;
 
-                Place(block, startDeep - i);
+				Place(block, startDeep - i);
 				block.transform.position += dur * (count - 1 - i);
 			}
 		}
-    }
+
+		#endregion
+
+	}
 }
 
 

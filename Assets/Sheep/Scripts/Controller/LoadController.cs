@@ -53,13 +53,6 @@ namespace Sheep
             _view.SheepTransform.localScale = new Vector3(targetScaleX, currentScale.y, currentScale.z);
         }
 
-        void Loat()
-        {
-            _view.Progress.DOSizeDelta(new Vector2(1000, 60), 3);
-            //_view.Progress.rect.width;
-
-		}
-
 
         void BeginProgress()
         {
@@ -79,7 +72,7 @@ namespace Sheep
         {
             while (_view.Progress.rect.width < 1000) 
             {
-                _view.Progress.sizeDelta += new Vector2(200, 0) * Time.deltaTime;
+                _view.Progress.sizeDelta += new Vector2(500, 0) * Time.deltaTime;
 				yield return null;
 			}
 

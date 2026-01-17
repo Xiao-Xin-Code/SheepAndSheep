@@ -6,13 +6,13 @@ namespace Sheep
 {
     public class LevelController : MonoController
     {
-		LevelModel _levelModel;
         LevelSystem _levelSystem;
 		AssetSystem _assetSystem;
+		DataModel _dataModel;
 
         public override void Init()
         {
-			_levelModel = this.GetModel<LevelModel>();
+			_dataModel = this.GetModel<DataModel>();
             _levelSystem = this.GetSystem<LevelSystem>();
 			_assetSystem = this.GetSystem<AssetSystem>();
 			this.RegisterEvent<LaunchLevelEvent>(OnLaunchLevel);
@@ -28,9 +28,6 @@ namespace Sheep
 
 		private void OnInitLevelModel()
 		{
-			//加载assets
-			_levelModel.Theme.Value = "Theme0";
-			_levelModel.blockCount = 6;
 			LoadBlockIcons();
 			//初始类型数据
 			_levelSystem.InitBlockTypes();
@@ -38,7 +35,7 @@ namespace Sheep
 
 		private void LoadBlockIcons()
 		{
-			Sprite[] icons = Resources.LoadAll<Sprite>(_levelModel.Theme.Value);
+			Sprite[] icons = Resources.LoadAll<Sprite>(_dataModel.Theme.Value);
 			foreach (var item in icons)
 			{
 				Debug.Log("添加：" + item);

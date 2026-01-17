@@ -8,16 +8,11 @@ namespace Sheep
     {
         [SerializeField] LaunchConfirmView _view;
 
-        LevelModel _levelModel;
-        AssetSystem _assetSystem;
-
         LevelSystem _levelSystem;
         PoolSystem _poolSystem;
 
         public override void Init()
         {
-            _levelModel = this.GetModel<LevelModel>();
-            _assetSystem = this.GetSystem<AssetSystem>();
             _poolSystem = this.GetSystem<PoolSystem>();
             _levelSystem = this.GetSystem<LevelSystem>();
 

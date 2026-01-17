@@ -1,12 +1,10 @@
 using System.Collections.Generic;
 using System.IO;
-using DG.Tweening.Plugins.Core.PathCore;
 using QMVC;
 using UnityEngine;
 
 namespace Sheep
 {
-
     public class AssetSystem : AbstractSystem
     {
         public BlockController block;
@@ -14,17 +12,37 @@ namespace Sheep
 		private Dictionary<string, Sprite> themeIcons = new Dictionary<string, Sprite>();
 		string[] levelPaths;
 
+		DataModel _dataModel;
 
 		protected override void OnInit()
         {
+			_dataModel = this.GetModel<DataModel>();
+
             sfx = Resources.Load<SFXController>("SFX");
             block = Resources.Load<BlockController>("Item");
 
 			string levelPath = Application.streamingAssetsPath + "/Level";
 			levelPaths = Directory.GetFiles(levelPath,"*.txt");
-			
-        }
 
+			_dataModel.Theme.RegisterWithInitValue(OnThemeChanged);
+		}
+
+		/// <summary>
+		/// 主题变化
+		/// </summary>
+		/// <param name="theme"></param>
+		private void OnThemeChanged(string theme)
+		{
+			themeIcons = new Dictionary<string, Sprite>();
+			Sprite[] icons = Resources.LoadAll<Sprite>(_dataModel.Theme.Value);
+			foreach (var item in icons)
+			{
+				Debug.Log("添加：" + item);
+				AddIcon(item.name, item);
+			}
+		}
+
+		#region 关卡数据操作
 
 		public string[] GetLevel()
 		{
@@ -33,43 +51,10 @@ namespace Sheep
 			return lines;
 		}
 
-		private void ReadLevel()
-		{
-			string path = "";
-
-			string[] lines = File.ReadAllLines(path);
-
-			foreach (var line in lines)
-			{
-				string head = line.Split('#')[0];
-
-				if(head == "T")
-				{
-					string[] datas = line.Split('#')[1].Split('|');
-
-					int.Parse(datas[0]);
-					int.Parse(datas[1].Split(',')[0]);
-					int.Parse(datas[1].Split(',')[1]);
-					int.Parse(datas[2].Split(',')[1]);
-					int.Parse(datas[2].Split(',')[1]);
+		#endregion
 
 
-				}
-				else if (head == "1")
-				{
-
-				}
-				else if(head == "2")
-				{
-
-				}
-
-			}
-
-
-		}
-
-
+		#region 图标数据操作
 
 		public Sprite GetIcon(string path)
 		{
@@ -97,6 +82,9 @@ namespace Sheep
 		{
 			themeIcons.Clear();
 		}
+
+		#endregion
+
 	}
 
 }

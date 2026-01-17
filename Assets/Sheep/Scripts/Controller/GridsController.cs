@@ -28,13 +28,12 @@ namespace Sheep
 
             for(int i = 1; i < _levelModel.level.Length; i++)
             {
-                LevelBlock(_levelModel.level[i]);
+                CreateLevelBlock(_levelModel.level[i]);
 			}
 
             _levelSystem.UpdateBlock();
             _levelModel.isLevelOver = true;
 		}
-
 
         private void CreateLevelBlock(string areadata)
         {
@@ -54,7 +53,6 @@ namespace Sheep
 					break;
             }
         }
-
 
         private void OnRemoveInGrids(RemoveInGridsEvent evt)
         {
@@ -150,8 +148,6 @@ namespace Sheep
 		}
 
 		#endregion
-
-
 
 		#region 区域创建方法
 

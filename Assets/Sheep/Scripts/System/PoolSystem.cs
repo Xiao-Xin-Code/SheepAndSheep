@@ -47,6 +47,11 @@ public class PoolSystem : AbstractSystem
 		blockPool.Recycle(block);
 	}
 
+	public void RecycleAllBlock()
+	{
+		blockPool.RecycleAll();
+	}
+
 	public void RecycleSFX(SFXController source)
 	{
 		sfxPool.Recycle(source);

@@ -10,7 +10,7 @@ namespace Frame
     /// </summary>
     public sealed partial class MonoService : AutoSingleton<MonoService>
     {
-        private MonoService() { }
+        public MonoService() { }
 
         #region Ð­³Ì
         public Coroutine StartCoroutine(IEnumerator routine)

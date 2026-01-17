@@ -47,6 +47,11 @@ namespace Sheep
             return blocks.Count != 0;
         }
 
+		public void ClearBlocks()
+		{
+			blocks.Clear();
+		}
+
 
 
 		/// <summary>

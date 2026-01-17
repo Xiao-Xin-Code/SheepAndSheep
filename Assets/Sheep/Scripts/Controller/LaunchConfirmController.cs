@@ -1,4 +1,4 @@
-using JetBrains.Annotations;
+using Frame;
 using QMVC;
 using UnityEngine;
 
@@ -11,18 +11,33 @@ namespace Sheep
         LevelModel _levelModel;
         AssetSystem _assetSystem;
 
+        LevelSystem _levelSystem;
+        PoolSystem _poolSystem;
 
         public override void Init()
         {
             _levelModel = this.GetModel<LevelModel>();
             _assetSystem = this.GetSystem<AssetSystem>();
+            _poolSystem = this.GetSystem<PoolSystem>();
+            _levelSystem = this.GetSystem<LevelSystem>();
 
             _view.RegisterLaunchPressedEvent(OnLaunchPressed);
             _view.RegisterClosePressedEvent(OnClosePressed);
             this.RegisterEvent<JoinEvent>(JoinCallBack);
 
-            gameObject.SetActive(false);
-        }
+			MonoService.Instance.AddUpdateListener(() =>
+			{
+				if (Input.GetKeyDown(KeyCode.R))
+				{
+                    //回收
+                    _poolSystem.RecycleAllBlock();
+                    _levelSystem.ClearBlocks();
+					OnLaunchPressed();
+				}
+			});
+
+			gameObject.SetActive(false);
+		}
 
 
         private void JoinCallBack(JoinEvent evt)
@@ -34,18 +49,6 @@ namespace Sheep
         private void OnLaunchPressed()
         {
             this.SendCommand(new LaunchTransitionCommand(Hide));
-            //初始化数据
-            _levelModel.isLevelOver = false;
-            string[] level = _assetSystem.GetLevel();
-            Debug.Log(level.Length + level[0]);
-            Debug.Log(level[0].Split('#').Length);
-            string[] split = level[0].Split('#')[1].Split('|');
-            _levelModel.blockCount = int.Parse(split[0]);
-            _levelModel.width = int.Parse(split[1].Split(',')[0]);
-            _levelModel.height = int.Parse(split[1].Split(',')[1]);
-            _levelModel.center = new Vector2(int.Parse(split[2].Split(',')[0]), int.Parse(split[2].Split(',')[1]));
-            _levelModel.level = level;
-
 			this.SendCommand<LaunchLevelCommand>();
         }
 

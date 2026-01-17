@@ -30,9 +30,12 @@ namespace Sheep
 				if (Input.GetKeyDown(KeyCode.R))
 				{
                     //»ØÊÕ
-                    _poolSystem.RecycleAllBlock();
-                    _levelSystem.ClearBlocks();
-					OnLaunchPressed();
+					this.SendCommand(new LaunchTransitionCommand(() =>
+                    {
+						_poolSystem.RecycleAllBlock();
+						_levelSystem.ClearBlocks();
+						this.SendCommand<LaunchLevelCommand>();
+					}));
 				}
 			});
 

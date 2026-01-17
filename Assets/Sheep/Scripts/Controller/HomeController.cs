@@ -23,6 +23,12 @@ namespace Sheep
             this.SendCommand<UnFoldMenuCommand>();
         }
 
+
+        private void ActiveHome(bool isOn)
+        {
+            gameObject.SetActive(isOn);
+        }
+
     }
 }
 

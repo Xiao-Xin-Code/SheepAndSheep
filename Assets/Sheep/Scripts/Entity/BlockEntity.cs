@@ -10,6 +10,9 @@ namespace Sheep
 		public string theme;
 		public string content;
 
+		/// <summary>
+		/// 占用位置标号
+		/// </summary>
 		public Vector2Int[] occupiedCells;
 
 		public int ID { get; set; }

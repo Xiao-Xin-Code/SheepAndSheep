@@ -28,6 +28,7 @@ namespace Sheep
 
         public void AddBlock(int id, BlockController block)
         {
+			Debug.Log("Ìí¼Ó1");
             if (!blocks.ContainsKey(id))
             {
                 blocks.Add(id, block);

@@ -47,9 +47,9 @@ namespace Sheep
                     CreateHeadUpBlock(int.Parse(data[0]), new Vector2Int(int.Parse(v2Int[0]), int.Parse(v2Int[1])), new Vector2(float.Parse(v2[0]), float.Parse(v2[1])), int.Parse(data[3]));
 					break;
                 case "2":
-                    v2Int = data[0].Split(',');
+                    string[] v2Int_wh = data[0].Split(',');
                     v2Int = data[1].Split(',');
-                    CreateSpecifiedBlock(int.Parse(v2Int[0]), int.Parse(v2Int[1]), new Vector2Int(int.Parse(v2Int[0]), int.Parse(v2Int[1])), int.Parse(data[2]));
+                    CreateSpecifiedBlock(int.Parse(v2Int_wh[0]), int.Parse(v2Int_wh[1]), new Vector2Int(int.Parse(v2Int[0]), int.Parse(v2Int[1])), int.Parse(data[2]));
 					break;
             }
         }
@@ -173,6 +173,7 @@ namespace Sheep
 						startCoord + new Vector2Int(i * 2,j * 2) + new Vector2Int(1,0),
 						startCoord + new Vector2Int(i * 2,j * 2) + new Vector2Int(1,1)
 					};
+					Debug.Log("Ìí¼Ó£º" + i + "|" + j);
 					Place(block, deep);
 				}
 			}

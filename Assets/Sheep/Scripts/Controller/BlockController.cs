@@ -8,7 +8,6 @@ namespace Sheep
 	{
 		[SerializeField] BlockView _view;
 		BlockEntity _entity;
-		LevelSystem _levelSystem;
 		AssetSystem _assetSystem;
 
 		#region ÊôÐÔ
@@ -18,7 +17,7 @@ namespace Sheep
 
 		public string content { get => _entity.content; set => _entity.content = value; }
 
-		public Vector2Int[] OccupiedCells { get; set; }
+		public Vector2Int[] OccupiedCells { get => _entity.occupiedCells; set => _entity.occupiedCells = value; }
 		#endregion
 
 
@@ -39,7 +38,6 @@ namespace Sheep
 			_entity = new BlockEntity();
 			_entity.Interactable.RegisterWithInitValue(InteractableChanged);
 			_assetSystem = this.GetSystem<AssetSystem>();
-			_levelSystem = this.GetSystem<LevelSystem>();
 		}
 
         public void OnPointerClick(PointerEventData eventData)

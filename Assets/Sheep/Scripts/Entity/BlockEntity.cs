@@ -1,4 +1,5 @@
 using QMVC;
+using UnityEngine;
 
 
 namespace Sheep
@@ -9,6 +10,7 @@ namespace Sheep
 		public string theme;
 		public string content;
 
+		public Vector2Int[] occupiedCells;
 
 		public int ID { get; set; }
 	}

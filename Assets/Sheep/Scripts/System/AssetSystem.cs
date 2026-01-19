@@ -10,7 +10,6 @@ namespace Sheep
         public BlockController block;
         public SFXController sfx;
 		private Dictionary<string, Sprite> themeIcons;
-		string[] levelPaths;
 
 		DataModel _dataModel;
 
@@ -24,7 +23,7 @@ namespace Sheep
             block = Resources.Load<BlockController>("Item");
 
 			string levelPath = Application.streamingAssetsPath + "/Level";
-			levelPaths = Directory.GetFiles(levelPath,"*.txt");
+			_dataModel.levelPaths = Directory.GetFiles(levelPath,"*.txt");
 		}
 
 		/// <summary>
@@ -46,8 +45,8 @@ namespace Sheep
 
 		public string[] GetLevel()
 		{
-			int index = Random.Range(0, levelPaths.Length);
-			string[] lines = File.ReadAllLines(levelPaths[index]);
+			int index = Random.Range(0, _dataModel.levelPaths.Length);
+			string[] lines = File.ReadAllLines(_dataModel.levelPaths[index]);
 			return lines;
 		}
 

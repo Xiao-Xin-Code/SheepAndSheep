@@ -12,6 +12,10 @@ namespace Sheep
         public BindableProperty<string> Theme = new BindableProperty<string>("Theme0");
 
 
+        public string[] levelPaths;
+
+
+
 		protected override void OnInit()
         {
             

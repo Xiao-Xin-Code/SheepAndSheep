@@ -42,15 +42,17 @@ namespace Sheep
     public class LaunchTransitionCommand : AbstractCommand
     {
         private event Action overEvent;
+        private int state;
 
-        public LaunchTransitionCommand(Action overEvent)
+        public LaunchTransitionCommand(Action overEvent, int state)
         {
             this.overEvent = overEvent;
+            this.state = state;
         }
 
         protected override void OnExecute()
         {
-            this.SendEvent(new LaunchTransitionEvent(overEvent));
+            this.SendEvent(new LaunchTransitionEvent(overEvent, state));
         }
     }
 
@@ -98,6 +100,22 @@ namespace Sheep
         protected override void OnExecute()
         {
             this.SendEvent(new RemoveInGridsEvent(block));
+        }
+    }
+
+    public class GameOverCommand : AbstractCommand
+    {
+        protected override void OnExecute()
+        {
+            this.SendEvent<GameOverEvent>();
+        }
+    }
+
+    public class GameSucceedCommand : AbstractCommand
+    {
+        protected override void OnExecute()
+        {
+            this.SendEvent<GameSucceedEvent>();
         }
     }
 }

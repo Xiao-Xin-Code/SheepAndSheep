@@ -37,7 +37,9 @@ namespace Sheep
 
 	}
 
-
+	/// <summary>
+	/// ´¥·¢¹ý¶É
+	/// </summary>
 	public class LaunchTransitionEvent
 	{
 		/// <summary>
@@ -45,9 +47,12 @@ namespace Sheep
 		/// </summary>
 		public event Action overEvent;
 
-		public LaunchTransitionEvent(Action overEvent)
+		public int state;
+
+		public LaunchTransitionEvent(Action overEvent, int state)
 		{
 			this.overEvent = overEvent;
+			this.state = state;
 		}
 
 		public void Trigger() => overEvent?.Invoke();
@@ -68,6 +73,17 @@ namespace Sheep
 		{
 			this.block = block;
 		}
+	}
+
+
+	public class GameOverEvent
+	{
+
+	}
+
+	public class GameSucceedEvent
+	{
+
 	}
 
 }

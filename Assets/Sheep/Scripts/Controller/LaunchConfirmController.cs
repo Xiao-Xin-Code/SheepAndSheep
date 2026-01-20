@@ -1,3 +1,5 @@
+using System;
+using System.Data;
 using Frame;
 using QMVC;
 using UnityEngine;
@@ -25,12 +27,12 @@ namespace Sheep
 				if (Input.GetKeyDown(KeyCode.R))
 				{
                     //»ØÊÕ
-					this.SendCommand(new LaunchTransitionCommand(() =>
+                    this.SendCommand(new LaunchTransitionCommand(() =>
                     {
-						_poolSystem.RecycleAllBlock();
-						_levelSystem.ClearBlocks();
-						this.SendCommand<LaunchLevelCommand>();
-					}));
+                        _poolSystem.RecycleAllBlock();
+                        _levelSystem.ClearBlocks();
+                        this.SendCommand<LaunchLevelCommand>();
+                    }, 1));
 				}
 			});
 
@@ -40,13 +42,15 @@ namespace Sheep
 
         private void JoinCallBack(JoinEvent evt)
         {
-            gameObject.SetActive(true);
+			DateTime now = DateTime.Now;
+			_view.SetTime(now.ToString("MM/dd"));
+			gameObject.SetActive(true);
         }
 
 
         private void OnLaunchPressed()
         {
-            this.SendCommand(new LaunchTransitionCommand(Hide));
+            this.SendCommand(new LaunchTransitionCommand(Hide, 1));
 			this.SendCommand<LaunchLevelCommand>();
         }
 

@@ -23,7 +23,6 @@ namespace Sheep
 
 		private void OnInitLevel(InitLevelEvent evt)
         {
-            Debug.Log("≥ı ºªØ");
 			InitializeGrids(_levelModel.width, _levelModel.height, _levelModel.center);
 
             for(int i = 1; i < _levelModel.level.Length; i++)
@@ -42,14 +41,14 @@ namespace Sheep
             switch (split[0])
             {
                 case "1":
-                    string[] v2Int = data[1].Split(',');
-                    string[] v2 = data[2].Split(',');
-                    CreateHeadUpBlock(int.Parse(data[0]), new Vector2Int(int.Parse(v2Int[0]), int.Parse(v2Int[1])), new Vector2(float.Parse(v2[0]), float.Parse(v2[1])), int.Parse(data[3]));
+                    string[] startCoord = data[1].Split(',');
+                    string[] dur = data[2].Split(',');
+                    CreateHeadUpBlock(int.Parse(data[0]), new Vector2Int(int.Parse(startCoord[0]), int.Parse(startCoord[1])), new Vector2(float.Parse(dur[0]), float.Parse(dur[1])), int.Parse(data[3]));
 					break;
                 case "2":
-                    string[] v2Int_wh = data[0].Split(',');
-                    v2Int = data[1].Split(',');
-                    CreateSpecifiedBlock(int.Parse(v2Int_wh[0]), int.Parse(v2Int_wh[1]), new Vector2Int(int.Parse(v2Int[0]), int.Parse(v2Int[1])), int.Parse(data[2]));
+                    string[] size = data[0].Split(',');
+					startCoord = data[1].Split(',');
+                    CreateSpecifiedBlock(int.Parse(size[0]), int.Parse(size[1]), new Vector2Int(int.Parse(startCoord[0]), int.Parse(startCoord[1])), int.Parse(data[2]));
 					break;
             }
         }
@@ -173,7 +172,6 @@ namespace Sheep
 						startCoord + new Vector2Int(i * 2,j * 2) + new Vector2Int(1,0),
 						startCoord + new Vector2Int(i * 2,j * 2) + new Vector2Int(1,1)
 					};
-					Debug.Log("ÃÌº”£∫" + i + "|" + j);
 					Place(block, deep);
 				}
 			}

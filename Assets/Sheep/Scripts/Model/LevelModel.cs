@@ -6,7 +6,7 @@ namespace Sheep
     public enum LevelState
     {
         Runtime,
-        Over,
+        Failure,
         Succeed
     }
 
@@ -22,26 +22,14 @@ namespace Sheep
         public string[] level;
         public BindableProperty<LevelState> levelState;
 
+        public bool levelup = false;
+
 		protected override void OnInit()
         {
 			levelState = new BindableProperty<LevelState>();
-			levelState.Register(OnLevelStateChanged);
         }
 
-        private void OnLevelStateChanged(LevelState levelState)
-        {
-            switch (levelState)
-            {
-                case LevelState.Runtime:
-                    break;
-                case LevelState.Over:
-                    break;
-                case LevelState.Succeed:
-                    break;
-                default:
-                    break;
-            }
-        }
+    
     }
 }
 

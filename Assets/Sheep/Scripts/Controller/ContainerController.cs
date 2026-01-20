@@ -13,12 +13,17 @@ namespace Sheep
 
         PoolSystem _poolSystem;
         LevelSystem _levelSystem;
+        LevelModel _levelModel;
+        DataModel _dataModel;
 
         public override void Init()
         {
 			_poolSystem = this.GetSystem<PoolSystem>();
             _levelSystem = this.GetSystem<LevelSystem>();
-            this.RegisterEvent<PlaceToContainerEvent>(PlaceToContainer);
+            _levelModel = this.GetModel<LevelModel>();
+            _dataModel = this.GetModel<DataModel>();
+
+			this.RegisterEvent<PlaceToContainerEvent>(PlaceToContainer);
         }
 
         private void Place(BlockController block)
@@ -38,7 +43,7 @@ namespace Sheep
             if (vessel.Count + 1 >= _view.Cells.Length) 
             {
                 //over
-
+                _levelModel.levelState.Value = LevelState.Failure;
                 return;
             }
             else
@@ -104,6 +109,7 @@ namespace Sheep
                     if(vessel.Count == _view.Cells.Length)
                     {
                         Debug.Log("失败");
+                        _levelModel.levelState.Value = LevelState.Failure;
                     }
                     else
                     {
@@ -112,17 +118,30 @@ namespace Sheep
                             if(vessel.Count == 0)
                             {
 								Debug.Log("成功");
+                                if (_levelModel.levelup)
+                                {
+									_levelModel.levelState.Value = LevelState.Succeed;
+								}
+                                else
+                                {
+                                    _levelModel.levelup = true;
+                                    this.SendCommand(new LaunchTransitionCommand(null, 2));
+									this.SendCommand<LaunchLevelCommand>();
+									//启动新的
+								}
+
+								
 							}
                             else
                             {
                                 Debug.Log("失败");
-                            }
+								_levelModel.levelState.Value = LevelState.Failure;
+							}
                         }
 					}
                 }
             };
         }
-
 
         private void PlaceToContainer(PlaceToContainerEvent evt)
         {

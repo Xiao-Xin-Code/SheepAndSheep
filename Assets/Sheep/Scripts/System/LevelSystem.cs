@@ -28,7 +28,6 @@ namespace Sheep
 
         public void AddBlock(int id, BlockController block)
         {
-			Debug.Log("Ìí¼Ó1");
             if (!blocks.ContainsKey(id))
             {
                 blocks.Add(id, block);
@@ -91,7 +90,7 @@ namespace Sheep
 					blockTypes.Add($"block_{i + 1}");
 				}
 			}
-			Debug.Log(blockTypes.Count);
+
 			Shuffle();
 		}
 
@@ -102,12 +101,9 @@ namespace Sheep
 		public void UpdateBlock()
 		{
 			int index = 0;
-			Debug.Log(blocks.Count);
 			foreach (var item in blocks)
 			{
-				Debug.Log("µ±Ç°Index" + index);
 				item.Value.content = blockTypes[index];
-				Debug.Log(blockTypes[index]);
 				item.Value.UpdateIcon();
 				index++;
 			}

@@ -28,7 +28,8 @@ namespace Sheep
 
 		public void UpdateIcon()
 		{
-			Debug.Log("Ìæ»»£º" + _assetSystem.GetIcon(_entity.content));
+			_view.BgRenderer.sprite = _assetSystem.BgSprite;
+			_view.MaskRenderer.sprite = _assetSystem.MaskSprite;
 			_view.IconRenderer.sprite = _assetSystem.GetIcon(_entity.content);
 		}
 

@@ -15,7 +15,6 @@ namespace Sheep
         public override void Init()
         {
             _levelModel = this.GetModel<LevelModel>();
-
             this.RegisterEvent<LaunchTransitionEvent>(LaunchTransition);
 
             gameObject.SetActive(false);
@@ -27,7 +26,11 @@ namespace Sheep
         private void LaunchTransition(LaunchTransitionEvent evt)
         {
 			_view.RectTransform.anchoredPosition = Vector2.zero;
+			_view.SheepGroup.SetActive(evt.state == 1);
+			_view.LevelUp.SetActive(evt.state == 2);
 			gameObject.SetActive(true);
+
+            //ÒÆ¶¯¸²¸Ç
 			_view.RectTransform.DOAnchorPosX(-_view.RectTransform.rect.width, 1).SetEase(Ease.Linear).OnComplete(() =>
 			{
                 evt.Trigger();
@@ -58,7 +61,7 @@ namespace Sheep
             {
                 if (_levelModel.isLevelOver)
                 {
-					_view.RectTransform.DOAnchorPosX(-2 * _view.RectTransform.rect.width, 2);
+                    _view.RectTransform.DOAnchorPosX(-2 * _view.RectTransform.rect.width, 2);
                     break;
 				}
 				yield return 0;

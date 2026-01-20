@@ -1,6 +1,4 @@
-﻿
-using Frame;
-using QMVC;
+﻿using QMVC;
 using UnityEngine;
 
 namespace Sheep
@@ -19,6 +17,7 @@ namespace Sheep
             _levelSystem = this.GetSystem<LevelSystem>();
 			_assetSystem = this.GetSystem<AssetSystem>();
 			this.RegisterEvent<LaunchLevelEvent>(OnLaunchLevel);
+			_levelModel.levelState.Register(OnLevelStateChanged);
 		}
 
 
@@ -26,33 +25,35 @@ namespace Sheep
 		{
 			//初始化数据
 			_levelModel.isLevelOver = false;
-			string[] level = _assetSystem.GetLevel();
-			Debug.Log(level.Length + level[0]);
-			Debug.Log(level[0].Split('#').Length);
+			string[] level = _levelModel.levelup ? _assetSystem.GetLevel() : _assetSystem.GetDefaultLevel();
 			string[] split = level[0].Split('#')[1].Split('|');
 			_levelModel.blockCount = int.Parse(split[0]);
 			_levelModel.width = int.Parse(split[1].Split(',')[0]);
 			_levelModel.height = int.Parse(split[1].Split(',')[1]);
 			_levelModel.center = new Vector2(int.Parse(split[2].Split(',')[0]), int.Parse(split[2].Split(',')[1]));
 			_levelModel.level = level;
-			//加载图标数据
-			LoadBlockIcons();
+			_levelModel.levelState.Value = LevelState.Runtime;
 			//初始类型数据
 			_levelSystem.InitBlockTypes();
 			//初始化关卡
 			this.SendCommand<InitLevelCommand>();
 		}
 
-		/// <summary>
-		/// 加载图标的数据
-		/// </summary>
-		private void LoadBlockIcons()
+
+		private void OnLevelStateChanged(LevelState levelState)
 		{
-			Sprite[] icons = Resources.LoadAll<Sprite>(_dataModel.Theme.Value);
-			foreach (var item in icons)
+			switch (levelState)
 			{
-				Debug.Log("添加：" + item);
-				_assetSystem.AddIcon(item.name, item);
+				case LevelState.Runtime:
+					break;
+				case LevelState.Failure:
+					this.SendCommand<GameOverCommand>();
+					break;
+				case LevelState.Succeed:
+					this.SendCommand<GameSucceedCommand>();
+					break;
+				default:
+					break;
 			}
 		}
 

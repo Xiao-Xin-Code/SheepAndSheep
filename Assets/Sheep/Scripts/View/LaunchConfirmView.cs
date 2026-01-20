@@ -10,7 +10,7 @@ namespace Sheep
 		[SerializeField] Button launch;
 		[SerializeField] Button close;
 
-
+		[SerializeField] Text timeText;
 
 		#region Register
 
@@ -26,7 +26,6 @@ namespace Sheep
 
 		#endregion
 
-
 		#region UnRegister
 
 		public void UnRegisterLaunchPressedEvent(UnityAction action)
@@ -41,7 +40,10 @@ namespace Sheep
 
 		#endregion
 
-
+		public void SetTime(string dateTime)
+		{
+			timeText.text = dateTime;
+		}
 	}
 }
 

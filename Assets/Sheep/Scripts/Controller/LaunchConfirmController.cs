@@ -22,20 +22,6 @@ namespace Sheep
             _view.RegisterClosePressedEvent(OnClosePressed);
             this.RegisterEvent<JoinEvent>(JoinCallBack);
 
-			MonoService.Instance.AddUpdateListener(() =>
-			{
-				if (Input.GetKeyDown(KeyCode.R))
-				{
-                    //»ØÊÕ
-                    this.SendCommand(new LaunchTransitionCommand(() =>
-                    {
-                        _poolSystem.RecycleAllBlock();
-                        _levelSystem.ClearBlocks();
-                        this.SendCommand<LaunchLevelCommand>();
-                    }, 1));
-				}
-			});
-
 			gameObject.SetActive(false);
 		}
 
@@ -51,6 +37,8 @@ namespace Sheep
         private void OnLaunchPressed()
         {
             this.SendCommand(new LaunchTransitionCommand(Hide, 1));
+			_poolSystem.RecycleAllBlock();
+			_levelSystem.ClearBlocks();
 			this.SendCommand<LaunchLevelCommand>();
         }
 

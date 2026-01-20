@@ -125,7 +125,10 @@ namespace Sheep
                                 else
                                 {
                                     _levelModel.levelup = true;
+                                    Debug.Log("启动新的");
                                     this.SendCommand(new LaunchTransitionCommand(null, 2));
+                                    _poolSystem.RecycleAllBlock();
+                                    _levelSystem.ClearBlocks();
 									this.SendCommand<LaunchLevelCommand>();
 									//启动新的
 								}

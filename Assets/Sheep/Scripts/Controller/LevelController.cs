@@ -1,4 +1,5 @@
-﻿using QMVC;
+﻿using Frame;
+using QMVC;
 using UnityEngine;
 
 namespace Sheep
@@ -18,6 +19,22 @@ namespace Sheep
 			_assetSystem = this.GetSystem<AssetSystem>();
 			this.RegisterEvent<LaunchLevelEvent>(OnLaunchLevel);
 			_levelModel.levelState.Register(OnLevelStateChanged);
+
+
+
+			MonoService.Instance.AddUpdateListener(() =>
+			{
+				if (Input.GetKeyDown(KeyCode.R))
+				{
+					//回收
+					this.SendCommand(new LaunchTransitionCommand(() =>
+					{
+						//_poolSystem.RecycleAllBlock();
+						//_levelSystem.ClearBlocks();
+						//this.SendCommand<LaunchLevelCommand>();
+					}, 2));
+				}
+			});
 		}
 
 

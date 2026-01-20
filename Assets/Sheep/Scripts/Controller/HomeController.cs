@@ -29,6 +29,12 @@ namespace Sheep
             gameObject.SetActive(isOn);
         }
 
+
+        public void HomeViewVisible(bool isVisible)
+        {
+
+        }
+
     }
 }
 

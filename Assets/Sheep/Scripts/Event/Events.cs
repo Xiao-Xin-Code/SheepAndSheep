@@ -86,5 +86,26 @@ namespace Sheep
 
 	}
 
+
+	public class HomeViewVisibleEvent
+	{
+		public bool visible;
+
+		public HomeViewVisibleEvent(bool visible)
+		{
+			this.visible = visible;
+		}
+	}
+
+    public class MaskVisibleEvent
+    {
+        public bool visible;
+
+        public MaskVisibleEvent(bool visible)
+        {
+            this.visible = visible;
+        }
+    }
+
 }
 

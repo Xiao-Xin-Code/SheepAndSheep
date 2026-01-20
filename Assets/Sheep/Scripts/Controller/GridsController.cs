@@ -120,15 +120,17 @@ namespace Sheep
 		/// <param name="block"></param>
 		private void Remove(BlockController block)
 		{
-			foreach (var item in block.OccupiedCells)
+			int blockId = -1;
+            foreach (var item in block.OccupiedCells)
 			{
-				int id = grids[item.x][item.y].Pop();
-				_levelSystem.RemoveBlock(id);
+                blockId = grids[item.x][item.y].Pop();
 				GridController grid = grids[item.x][item.y];
 				BlockController temp = _levelSystem.GetBlock(grid.Peek());
 				if (temp != null) temp.interactable = CheckInteractable(temp);
 			}
-		}
+			Debug.Log("Grid移除：" + blockId);
+            _levelSystem.RemoveBlock(blockId);
+        }
 
 		/// <summary>
 		/// 检查交互性
@@ -165,6 +167,7 @@ namespace Sheep
 				{
 					//创建block
 					BlockController block = _poolSystem.GetBlock();
+					block.interactable = true;
 					block.OccupiedCells = new Vector2Int[4]
 					{
 						startCoord + new Vector2Int(i * 2,j * 2),
@@ -189,7 +192,8 @@ namespace Sheep
 			for (int i = 0; i < count; i++)
 			{
 				BlockController block = _poolSystem.GetBlock();
-				block.OccupiedCells = new Vector2Int[4]
+                block.interactable = true;
+                block.OccupiedCells = new Vector2Int[4]
 				{
 					startCoord,
 					startCoord + new Vector2Int(0,1),

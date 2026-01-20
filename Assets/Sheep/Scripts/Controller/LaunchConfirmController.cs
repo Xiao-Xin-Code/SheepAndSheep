@@ -50,6 +50,7 @@ namespace Sheep
 
         private void Hide()
         {
+            this.SendCommand(new HomeViewVisibleCommand(false));
             gameObject.SetActive(false);
         }
 

@@ -2,23 +2,18 @@ using QMVC;
 
 namespace Sheep
 {
-
-    public class GameOverController : MonoController
+    public class GameSucceedController : MonoController
     {
         public override void Init()
         {
-
-            this.RegisterEvent<GameOverEvent>(OnGameOver);
+            this.RegisterEvent<GameSucceedEvent>(OnGameSucceed);
             gameObject.SetActive(false);
         }
 
 
-
-
-        private void OnGameOver(GameOverEvent evt)
+        private void OnGameSucceed(GameSucceedEvent evt)
         {
             gameObject.SetActive(true);
-            //¼¤»îÊ×Ò³
         }
     }
 }

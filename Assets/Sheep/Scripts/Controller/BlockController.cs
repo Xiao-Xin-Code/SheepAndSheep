@@ -18,6 +18,8 @@ namespace Sheep
 		public string content { get => _entity.content; set => _entity.content = value; }
 
 		public Vector2Int[] OccupiedCells { get => _entity.occupiedCells; set => _entity.occupiedCells = value; }
+
+		public int ID { get => _entity.ID; }
 		#endregion
 
 
@@ -46,6 +48,7 @@ namespace Sheep
 			Debug.Log("µã»÷");
 			if (interactable)
 			{
+				_entity.Interactable.SetValueWithoutEvent(false);
 				this.SendCommand(new RemoveInGridsCommand(this));
 				this.SendCommand(new PlaceToContainerCommand(this));
 			}

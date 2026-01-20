@@ -64,6 +64,7 @@ namespace Sheep
 				case LevelState.Runtime:
 					break;
 				case LevelState.Failure:
+					Debug.Log("触发失败");
 					this.SendCommand<GameOverCommand>();
 					break;
 				case LevelState.Succeed:

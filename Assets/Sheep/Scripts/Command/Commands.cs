@@ -118,6 +118,22 @@ namespace Sheep
             this.SendEvent<GameSucceedEvent>();
         }
     }
+
+
+    public class HomeViewVisibleCommand : AbstractCommand
+    {
+        bool visible;
+
+        public HomeViewVisibleCommand(bool visible)
+        {
+            this.visible = visible;
+        }
+
+        protected override void OnExecute()
+        {
+            this.SendEvent(new HomeViewVisibleEvent(visible));
+        }
+    }
 }
 
 

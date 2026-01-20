@@ -11,6 +11,8 @@ namespace Sheep
         {
             _view.RegisterJoinPressedEvent(OnJoinPressed);
             _view.RegisterMenuPressedEvent(OnMenuPressed);
+            this.RegisterEvent<HomeViewVisibleEvent>(HomeViewVisible);
+            this.RegisterEvent<MaskVisibleEvent>(MaskVisible);
         }
 
         private void OnJoinPressed()
@@ -24,15 +26,14 @@ namespace Sheep
         }
 
 
-        private void ActiveHome(bool isOn)
+        private void HomeViewVisible(HomeViewVisibleEvent evt)
         {
-            gameObject.SetActive(isOn);
+            gameObject.SetActive(evt.visible);
         }
 
-
-        public void HomeViewVisible(bool isVisible)
+        private void MaskVisible(MaskVisibleEvent evt)
         {
-
+            _view.MaskController(evt.visible);
         }
 
     }

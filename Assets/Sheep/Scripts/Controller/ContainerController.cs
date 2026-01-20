@@ -28,6 +28,8 @@ namespace Sheep
 
         private void Place(BlockController block)
         {
+            Debug.Log("放置Block" + block.content);
+
             int last = -1;
             List<BlockController> sames = new List<BlockController>();
             for (int i = 0; i < vessel.Count; ++i) 
@@ -40,8 +42,9 @@ namespace Sheep
             }
             int insertIndex = sames.Count > 0 ? last + 1 : vessel.Count;
 
-            if (vessel.Count + 1 >= _view.Cells.Length) 
+            if (vessel.Count + 1 >= _view.Cells.Length && sames.Count < 2)  
             {
+                Debug.Log("失败");
                 //over
                 _levelModel.levelState.Value = LevelState.Failure;
                 return;
@@ -62,7 +65,8 @@ namespace Sheep
             }
 
             int curIndex = Mathf.Min(insertIndex, _view.Cells.Length - 1);
-            Tweener tweener = block.transform.DOMove(_view.Cells[curIndex].position, 2);
+            Debug.Log("移动到Cell：" + curIndex + _view.Cells[curIndex].position);
+            Tweener tweener = block.transform.DOMove(_view.Cells[curIndex].position, 0.5f);
             tweener.onPlay = () =>
             {
                 if(sames.Count == 2)
@@ -104,9 +108,10 @@ namespace Sheep
 					}
 				}
 
-                if(DOTween.TotalPlayingTweens() == 0)
+                //if(DOTween.TotalPlayingTweens() == 0)
                 {
-                    if(vessel.Count == _view.Cells.Length)
+                    Debug.Log("不存在动画");
+                    if (vessel.Count == _view.Cells.Length)
                     {
                         Debug.Log("失败");
                         _levelModel.levelState.Value = LevelState.Failure;
@@ -115,6 +120,7 @@ namespace Sheep
                     {
                         if (!_levelSystem.HasBlocks())
                         {
+                            Debug.Log("当前：" + vessel.Count);
                             if(vessel.Count == 0)
                             {
 								Debug.Log("成功");
@@ -132,8 +138,6 @@ namespace Sheep
 									this.SendCommand<LaunchLevelCommand>();
 									//启动新的
 								}
-
-								
 							}
                             else
                             {
@@ -142,6 +146,10 @@ namespace Sheep
 							}
                         }
 					}
+                }
+                //else 
+                {
+                    Debug.Log("存在动画");
                 }
             };
         }

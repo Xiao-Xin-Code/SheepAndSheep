@@ -143,6 +143,22 @@ namespace Sheep
             this.SendEvent<ClearContainerEvent>();
         }
     }
+
+
+    public class LevelVisibleCommand : AbstractCommand
+    {
+        bool visible;
+
+        public LevelVisibleCommand(bool visible)
+        {
+            this.visible = visible;
+        }
+
+        protected override void OnExecute()
+        {
+            this.SendEvent(new LevelVisibleEvent(visible));
+        }
+    }
 }
 
 

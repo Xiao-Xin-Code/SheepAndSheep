@@ -1,5 +1,6 @@
 ﻿using Frame;
 using QMVC;
+using UnityEditor;
 using UnityEngine;
 
 namespace Sheep
@@ -18,23 +19,12 @@ namespace Sheep
             _levelSystem = this.GetSystem<LevelSystem>();
 			_assetSystem = this.GetSystem<AssetSystem>();
 			this.RegisterEvent<LaunchLevelEvent>(OnLaunchLevel);
+			this.RegisterEvent<LevelVisibleEvent>(LevelVisible);
+
 			_levelModel.levelState.Register(OnLevelStateChanged);
 
+			gameObject.SetActive(false);
 
-
-			MonoService.Instance.AddUpdateListener(() =>
-			{
-				if (Input.GetKeyDown(KeyCode.R))
-				{
-					//回收
-					this.SendCommand(new LaunchTransitionCommand(() =>
-					{
-						//_poolSystem.RecycleAllBlock();
-						//_levelSystem.ClearBlocks();
-						//this.SendCommand<LaunchLevelCommand>();
-					}, 2));
-				}
-			});
 		}
 
 
@@ -73,6 +63,12 @@ namespace Sheep
 				default:
 					break;
 			}
+		}
+
+
+		private void LevelVisible(LevelVisibleEvent evt)
+		{
+			gameObject.SetActive(evt.visible);
 		}
 
 	}

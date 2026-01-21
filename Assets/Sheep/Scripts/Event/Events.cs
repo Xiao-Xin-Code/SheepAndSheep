@@ -112,5 +112,16 @@ namespace Sheep
 		
 	}
 
+
+	public class LevelVisibleEvent
+	{
+		public bool visible;
+
+		public LevelVisibleEvent(bool visible)
+		{
+			this.visible = visible;
+		}
+	}
+
 }
 

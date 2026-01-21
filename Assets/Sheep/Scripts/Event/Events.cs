@@ -31,7 +31,6 @@ namespace Sheep
 
 	}
 
-
 	public class JoinEvent
 	{
 
@@ -63,8 +62,6 @@ namespace Sheep
 
 	}
 
-
-
 	public class RemoveInGridsEvent
 	{
 		public BlockController block;
@@ -74,7 +71,6 @@ namespace Sheep
 			this.block = block;
 		}
 	}
-
 
 	public class GameOverEvent
 	{
@@ -86,7 +82,11 @@ namespace Sheep
 
 	}
 
+	#region Visible
 
+	/// <summary>
+	/// Home显示控制
+	/// </summary>
 	public class HomeViewVisibleEvent
 	{
 		public bool visible;
@@ -96,23 +96,21 @@ namespace Sheep
 			this.visible = visible;
 		}
 	}
-
-    public class MaskVisibleEvent
-    {
-        public bool visible;
-
-        public MaskVisibleEvent(bool visible)
-        {
-            this.visible = visible;
-        }
-    }
-
-	public class ClearContainerEvent
+	/// <summary>
+	/// 遮挡 显示控制
+	/// </summary>
+	public class MaskVisibleEvent
 	{
-		
+		public bool visible;
+
+		public MaskVisibleEvent(bool visible)
+		{
+			this.visible = visible;
+		}
 	}
-
-
+	/// <summary>
+	/// 关卡 显示控制
+	/// </summary>
 	public class LevelVisibleEvent
 	{
 		public bool visible;
@@ -121,6 +119,13 @@ namespace Sheep
 		{
 			this.visible = visible;
 		}
+	}
+
+	#endregion
+
+	public class ClearContainerEvent
+	{
+		
 	}
 
 }

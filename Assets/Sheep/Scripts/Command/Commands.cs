@@ -135,6 +135,22 @@ namespace Sheep
         }
     }
 
+    public class MaskVisibleCommand : AbstractCommand
+    {
+        bool visible;
+
+        public MaskVisibleCommand(bool visible)
+        {
+            this.visible = visible;
+        }
+
+        protected override void OnExecute()
+        {
+            this.SendEvent(new MaskVisibleEvent(visible));
+        }
+    }
+
+
 
     public class ClearContainerCommand : AbstractCommand
     {

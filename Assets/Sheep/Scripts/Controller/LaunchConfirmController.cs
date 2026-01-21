@@ -45,6 +45,7 @@ namespace Sheep
         private void OnClosePressed()
         {
             gameObject.SetActive(false);
+            this.SendCommand(new MaskVisibleCommand(false));
         }
 
 

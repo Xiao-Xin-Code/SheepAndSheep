@@ -22,7 +22,8 @@ namespace Sheep
 
         private void OnJoinPressed()
         {
-            this.SendCommand<JoinCommand>();
+			_view.MaskController(true);
+			this.SendCommand<JoinCommand>();
         }
 
         private void OnMenuPressed()

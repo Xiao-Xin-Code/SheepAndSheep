@@ -9,12 +9,13 @@ namespace Sheep
     {
         [SerializeField] TransitionView _view;
 
-
+        AudioSystem _audioSystem;
         LevelModel _levelModel;
 
         public override void Init()
         {
             _levelModel = this.GetModel<LevelModel>();
+            _audioSystem = this.GetSystem<AudioSystem>();
             this.RegisterEvent<LaunchTransitionEvent>(LaunchTransition);
 
             gameObject.SetActive(false);
@@ -29,6 +30,8 @@ namespace Sheep
 			_view.SheepGroup.SetActive(evt.state == 1);
 			_view.LevelUp.SetActive(evt.state == 2);
 			gameObject.SetActive(true);
+            Debug.Log("¹ý¶É");
+            _audioSystem.PlaySFX("Click");
 
             //ÒÆ¶¯¸²¸Ç
 			_view.RectTransform.DOAnchorPosX(-_view.RectTransform.rect.width, 1).SetEase(Ease.Linear).OnComplete(() =>

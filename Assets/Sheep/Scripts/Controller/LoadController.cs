@@ -1,5 +1,6 @@
 using System.Collections;
 using DG.Tweening;
+using QMVC;
 using UnityEngine;
 
 namespace Sheep
@@ -76,6 +77,7 @@ namespace Sheep
 				yield return null;
 			}
 
+            this.SendCommand(new HomeViewVisibleCommand(true));
             gameObject.SetActive(false);
         }
 

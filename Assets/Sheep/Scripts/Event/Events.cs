@@ -107,5 +107,10 @@ namespace Sheep
         }
     }
 
+	public class ClearContainerEvent
+	{
+		
+	}
+
 }
 

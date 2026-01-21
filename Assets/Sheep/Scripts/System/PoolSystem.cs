@@ -17,11 +17,11 @@ public class PoolSystem : AbstractSystem
 		_assetSystem = this.GetSystem<AssetSystem>();
 
 		poolRoot = new GameObject("Pools").transform;
-		Transform blockParent = new GameObject(nameof(BlockController)).transform;
+		Transform blockParent = new GameObject(_assetSystem.block.GetType().Name).transform;
 		blockParent.SetParent(poolRoot);
 		blockPool = new MonoPool<BlockController>(_assetSystem.block, blockParent);
 
-		Transform sfxParent = new GameObject("SFX").transform;
+		Transform sfxParent = new GameObject(_assetSystem.sfx.GetType().Name).transform;
 		sfxParent.SetParent(poolRoot);
 		sfxPool = new ComponentPool<SFXController>(_assetSystem.sfx, sfxParent);
 	}

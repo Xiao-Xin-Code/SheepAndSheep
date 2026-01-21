@@ -10,6 +10,7 @@ namespace Sheep
     public class AudioSystem : AbstractSystem
     {
         PoolSystem _poolSystem;
+        AssetSystem _assetSystem;
 
         AudioSource _bgmSource;
         float _bgmVolume;
@@ -19,24 +20,25 @@ namespace Sheep
         protected override void OnInit()
         {
             _poolSystem = this.GetSystem<PoolSystem>();
-
+            _assetSystem = this.GetSystem<AssetSystem>();
+			_bgmSource = new GameObject("BGM").AddComponent<AudioSource>();
 
             //_poolSystem.GetBGM().
         }
 
 
 
+		#region BGM
 
-        public void PlaySFX(AudioClip clip, float volume = 1f, bool isLoop = false)
+		public void PlayBGM(string clip, bool isLoop = true)
         {
-            if (clip == null) return;
-            _poolSystem.GetSFX();
-        }
+            AudioClip audioClip = _assetSystem.GetBGM(clip);
+            PlayBGM(audioClip, isLoop);
+		}
 
 
-        #region BGM
 
-        public void PlayBGM(AudioClip clip,bool isLoop = true)
+		public void PlayBGM(AudioClip clip,bool isLoop = true)
         {
             if (clip == null)
             {
@@ -125,19 +127,19 @@ namespace Sheep
 		}
 
 
+		public void PlaySFX(string clip, float volume = 1f)
+		{
+            AudioClip audioClip = _assetSystem.GetSFX(clip);
+            Debug.Log(audioClip);
+            PlaySFX(audioClip, volume);
+		}
 
-        public void PlaySFX(AudioClip clip, float volume = 1f)
+		public void PlaySFX(AudioClip clip, float volume = 1f)
         {
             if (clip == null) return;
             SFXController sfx = _poolSystem.GetSFX();
-            sfx.Play(clip, volume,AudioSourceCompleted);
-        }
-
-
-
-		private void AudioSourceCompleted(SFXController sfx)
-        {
-            _poolSystem.RecycleSFX(sfx);
+            Debug.Log(sfx);
+            sfx.Play(clip, volume);
         }
     }
 

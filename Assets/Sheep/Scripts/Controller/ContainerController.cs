@@ -14,82 +14,73 @@ namespace Sheep
         PoolSystem _poolSystem;
         LevelSystem _levelSystem;
         LevelModel _levelModel;
-        DataModel _dataModel;
 
         public override void Init()
         {
 			_poolSystem = this.GetSystem<PoolSystem>();
             _levelSystem = this.GetSystem<LevelSystem>();
             _levelModel = this.GetModel<LevelModel>();
-            _dataModel = this.GetModel<DataModel>();
 
 			this.RegisterEvent<PlaceToContainerEvent>(PlaceToContainer);
+            this.RegisterEvent<ClearContainerEvent>(ClearContainer);
         }
+
+        int placeCount = 0;
 
         private void Place(BlockController block)
         {
             Debug.Log("放置Block" + block.content);
 
-            int last = -1;
-            List<BlockController> sames = new List<BlockController>();
-            for (int i = 0; i < vessel.Count; ++i) 
+            //容量测试
+            if (vessel.Count >= _view.Cells.Length)
             {
-                if (vessel[i].TypeEquals(block))
-                {
-                    sames.Add(vessel[i]);
-                    last = i;
-                }
-            }
-            int insertIndex = sames.Count > 0 ? last + 1 : vessel.Count;
-
-            if (vessel.Count + 1 >= _view.Cells.Length && sames.Count < 2)  
-            {
-                Debug.Log("失败");
-                //over
-                _levelModel.levelState.Value = LevelState.Failure;
                 return;
             }
-            else
-            {
-                if(sames.Count == 2)
-                {
-                    foreach (var item in sames) 
-                    {
-                        vessel.Remove(item);
-                    }
-                }
-                else
-                {
-                    vessel.Insert(insertIndex, block);
-                }
-            }
 
-            int curIndex = Mathf.Min(insertIndex, _view.Cells.Length - 1);
-            Debug.Log("移动到Cell：" + curIndex + _view.Cells[curIndex].position);
-            Tweener tweener = block.transform.DOMove(_view.Cells[curIndex].position, 0.5f);
+			List<BlockController> vesselSnapshot = new List<BlockController>(vessel);
+
+			int last = -1;
+			List<BlockController> sames = new List<BlockController>();
+			for (int i = 0; i < vesselSnapshot.Count; ++i)
+			{
+				if (vessel[i].TypeEquals(block))
+				{
+					sames.Add(vessel[i]);
+					last = i;
+				}
+			}
+			int insertIndex = sames.Count > 0 ? last + 1 : vessel.Count;
+
+			//更新数据
+			if (sames.Count == 2)
+			{
+				foreach (var item in sames)
+				{
+					vessel.Remove(item);
+				}
+			}
+			else
+			{
+				vessel.Insert(insertIndex, block);
+			}
+
+            //动画效果
+            Tweener tweener = block.transform.DOMove(_view.Cells[insertIndex].position, 0.5f);
             tweener.onPlay = () =>
             {
-                if(sames.Count == 2)
-                {
-                    for (int i = insertIndex - 2; i < vessel.Count; ++i) 
-					{
-						DOTween.Kill(vessel[i].transform);
-						int index = Mathf.Min(insertIndex + i + 1, _view.Cells.Length - 1);
-						vessel[i].transform.DOMove(_view.Cells[index].position, 1);
-					}
+				placeCount++;
+				int startIndex = sames.Count == 2 ? insertIndex - 2 : insertIndex + 1;
+                int targetIndex = insertIndex + 1;
+				for (int i = startIndex; i < vessel.Count; ++i)
+				{
+					DOTween.Kill(vessel[i].transform);
+					vessel[i].transform.DOMove(_view.Cells[targetIndex].position, 1);
+                    targetIndex++;
 				}
-                else
-                {
-                    for(int i = insertIndex + 1; i < vessel.Count; ++i)
-                    {
-                        DOTween.Kill(vessel[i].transform);
-                        vessel[i].transform.DOMove(_view.Cells[i].position, 1);
-                    }
-                }
             };
             tweener.onComplete = () =>
             {
-                if (sames.Count == 2)
+				if (sames.Count == 2)
                 {
                     foreach (var item in sames) 
                     {
@@ -107,49 +98,45 @@ namespace Sheep
 						vessel[i].transform.DOMove(_view.Cells[index].position, 1);
 					}
 				}
-
-                //if(DOTween.TotalPlayingTweens() == 0)
+				placeCount--;
+				if (placeCount == 0)
                 {
-                    Debug.Log("不存在动画");
-                    if (vessel.Count == _view.Cells.Length)
+                    if(vessel.Count == _view.Cells.Length)
                     {
-                        Debug.Log("失败");
-                        _levelModel.levelState.Value = LevelState.Failure;
-                    }
+						Debug.Log("失败");
+						_levelModel.levelState.Value = LevelState.Failure;
+					}
                     else
                     {
                         if (!_levelSystem.HasBlocks())
                         {
-                            Debug.Log("当前：" + vessel.Count);
-                            if(vessel.Count == 0)
+							if (vessel.Count == 0)
                             {
 								Debug.Log("成功");
-                                if (_levelModel.levelup)
-                                {
+								if (_levelModel.levelup)
+								{
 									_levelModel.levelState.Value = LevelState.Succeed;
 								}
-                                else
-                                {
-                                    _levelModel.levelup = true;
-                                    Debug.Log("启动新的");
-                                    this.SendCommand(new LaunchTransitionCommand(null, 2));
-                                    _poolSystem.RecycleAllBlock();
-                                    _levelSystem.ClearBlocks();
+								else
+								{
+									_levelModel.levelup = true;
+									Debug.Log("启动新的");
+									this.SendCommand(new LaunchTransitionCommand(null, 2));
+									_poolSystem.RecycleAllBlock();//回收使用的Block
+									_levelSystem.ClearBlocks();//清空关卡中的Block
+                                    placeCount = 0;
+									vessel.Clear();//清空容器中的Block
 									this.SendCommand<LaunchLevelCommand>();
 									//启动新的
 								}
 							}
                             else
                             {
-                                Debug.Log("失败");
+								Debug.Log("失败");
 								_levelModel.levelState.Value = LevelState.Failure;
 							}
-                        }
-					}
-                }
-                //else 
-                {
-                    Debug.Log("存在动画");
+						}
+                    }
                 }
             };
         }
@@ -158,5 +145,11 @@ namespace Sheep
         {
             Place(evt.block);
         }
+
+        private void ClearContainer(ClearContainerEvent evt)
+        {
+            placeCount = 0;
+            vessel.Clear();
+		}
     }
 }

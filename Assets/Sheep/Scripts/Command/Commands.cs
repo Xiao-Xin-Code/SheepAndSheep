@@ -134,6 +134,15 @@ namespace Sheep
             this.SendEvent(new HomeViewVisibleEvent(visible));
         }
     }
+
+
+    public class ClearContainerCommand : AbstractCommand
+    {
+        protected override void OnExecute()
+        {
+            this.SendEvent<ClearContainerEvent>();
+        }
+    }
 }
 
 

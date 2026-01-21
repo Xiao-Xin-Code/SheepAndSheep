@@ -9,6 +9,7 @@ namespace Sheep
 		[SerializeField] BlockView _view;
 		BlockEntity _entity;
 		AssetSystem _assetSystem;
+		AudioSystem _audioSystem;
 
 		#region ÊôÐÔ
 		public bool interactable { get => _entity.Interactable.Value; set => _entity.Interactable.Value = value; }
@@ -41,6 +42,7 @@ namespace Sheep
 			_entity = new BlockEntity();
 			_entity.Interactable.RegisterWithInitValue(InteractableChanged);
 			_assetSystem = this.GetSystem<AssetSystem>();
+			_audioSystem = this.GetSystem<AudioSystem>();
 		}
 
         public void OnPointerClick(PointerEventData eventData)
@@ -50,6 +52,7 @@ namespace Sheep
 			{
 				_entity.Interactable.SetValueWithoutEvent(false);
 				this.SendCommand(new RemoveInGridsCommand(this));
+				_audioSystem.PlaySFX("Click");
 				this.SendCommand(new PlaceToContainerCommand(this));
 			}
         }

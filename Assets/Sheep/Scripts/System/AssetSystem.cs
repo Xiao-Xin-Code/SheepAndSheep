@@ -14,6 +14,9 @@ namespace Sheep
 		private Sprite maskSprite;
 		private Dictionary<string, Sprite> themeIcons;
 
+		private Dictionary<string, AudioClip> bgms;
+		private Dictionary<string, AudioClip> sfxs;
+
 		DataModel _dataModel;
 
 		public Sprite BgSprite { get => bgSprite; }
@@ -31,6 +34,8 @@ namespace Sheep
 			
 			string levelPath = Application.streamingAssetsPath + "/Level";
 			_dataModel.levelPaths = Directory.GetFiles(levelPath,"*.txt");
+
+			LoadAllAudioClip();
 
 			GameConfig config = Resources.Load<GameConfig>("GameConfig");
 			_dataModel.MusicIsOn.Value = config.MusicIsOn;
@@ -111,6 +116,44 @@ namespace Sheep
 		}
 
 		#endregion
+
+		
+		public AudioClip GetBGM(string clip)
+		{
+			if (bgms.ContainsKey(clip))
+			{
+				return bgms[clip];
+			}
+			return null;
+		}
+
+		public AudioClip GetSFX(string clip)
+		{
+			if (sfxs.ContainsKey(clip))
+			{
+				return sfxs[clip];
+			}
+			return null;
+		}
+
+
+
+		private void LoadAllAudioClip()
+		{
+			this.bgms = new Dictionary<string, AudioClip>();
+			this.sfxs = new Dictionary<string, AudioClip>();
+			AudioClip[] bgms = Resources.LoadAll<AudioClip>($"Audio/BGM");
+			AudioClip[] sfxs = Resources.LoadAll<AudioClip>($"Audio/SFX");
+			Debug.Log(sfxs.Length);
+			foreach (var item in bgms)
+			{
+				this.bgms.Add(item.name, item);
+			}
+			foreach (var item in sfxs)
+			{
+				this.sfxs.Add(item.name, item);
+			}
+		}
 
 	}
 

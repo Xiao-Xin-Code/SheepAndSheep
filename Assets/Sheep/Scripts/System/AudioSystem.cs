@@ -13,8 +13,8 @@ namespace Sheep
         AssetSystem _assetSystem;
 
         AudioSource _bgmSource;
-        float _bgmVolume;
-        float _bgmFadeTime;
+        float _bgmVolume = 1;
+        float _bgmFadeTime = 0.5f;
         private Coroutine _bgmFadCoroutine;
 
         protected override void OnInit()
@@ -130,7 +130,6 @@ namespace Sheep
 		public void PlaySFX(string clip, float volume = 1f)
 		{
             AudioClip audioClip = _assetSystem.GetSFX(clip);
-            Debug.Log(audioClip);
             PlaySFX(audioClip, volume);
 		}
 
@@ -138,7 +137,6 @@ namespace Sheep
         {
             if (clip == null) return;
             SFXController sfx = _poolSystem.GetSFX();
-            Debug.Log(sfx);
             sfx.Play(clip, volume);
         }
     }

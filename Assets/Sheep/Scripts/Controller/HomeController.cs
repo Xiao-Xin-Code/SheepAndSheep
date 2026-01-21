@@ -28,6 +28,7 @@ namespace Sheep
 
         private void OnMenuPressed()
         {
+            _audioSystem.PlaySFX("Click");
             this.SendCommand<UnFoldMenuCommand>();
         }
 
@@ -35,7 +36,7 @@ namespace Sheep
         private void HomeViewVisible(HomeViewVisibleEvent evt)
         {
             gameObject.SetActive(evt.visible);
-            if (evt.visible) _audioSystem.PlayBGM("Common");
+            if (evt.visible) _audioSystem.PlayBGM("MainMusic");
 
 		}
 

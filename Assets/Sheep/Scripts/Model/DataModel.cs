@@ -16,6 +16,7 @@ namespace Sheep
 
         public BindableProperty<string> Theme = new BindableProperty<string>("Default");
 
+        public bool skipFirstLevel = false;
 
         public BindableProperty<GamePattern> _GamePattern = new BindableProperty<GamePattern>(GamePattern.Common);
 

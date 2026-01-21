@@ -1,5 +1,6 @@
 using QMVC;
 using UnityEngine;
+using static Codice.Client.Commands.WkTree.WorkspaceTreeNode;
 
 namespace Sheep
 {
@@ -73,14 +74,15 @@ namespace Sheep
 			Transform block = Resources.Load<Transform>("Grid");
 
 			grids = new GridController[height][];
-
-			float startY = height * 0.6f / 2;
-			float startX = -width * 0.6f / 2;
+            Debug.Log("创建W" + height);
+            float startY = height * 0.6f / 2 - 0.3f;
+			float startX = -width * 0.6f / 2 + 0.3f;
 
 			for (int h = 0; h < height; h++)
 			{
 				float curY = startY - h * 0.6f;
 				grids[h] = new GridController[width];
+				Debug.Log("创建W" + width);
 				for (int w = 0; w < width; w++)
 				{
 					float curX = startX + w * 0.6f;
@@ -101,6 +103,7 @@ namespace Sheep
 			int id = this.id++;//获取ID
 			foreach (var item in block.OccupiedCells)
 			{
+				Debug.Log($"{item.x},{item.y}");
 				GridController grid = grids[item.x][item.y];
 				BlockController temp = _levelSystem.GetBlock(grid.Peek());
 				if (temp != null) temp.interactable = false;
@@ -128,7 +131,6 @@ namespace Sheep
 				BlockController temp = _levelSystem.GetBlock(grid.Peek());
 				if (temp != null) temp.interactable = CheckInteractable(temp);
 			}
-			Debug.Log("Grid移除：" + blockId);
             _levelSystem.RemoveBlock(blockId);
         }
 
@@ -175,8 +177,9 @@ namespace Sheep
 						startCoord + new Vector2Int(i * 2,j * 2) + new Vector2Int(1,0),
 						startCoord + new Vector2Int(i * 2,j * 2) + new Vector2Int(1,1)
 					};
-					Place(block, deep);
-				}
+
+                    Place(block, deep);
+                }
 			}
 		}
 
@@ -201,9 +204,9 @@ namespace Sheep
 					startCoord + new Vector2Int(1,1)
 				};
 
-				block.interactable = true;
-
 				Place(block, startDeep - i);
+				
+				//单独设置偏移
 				block.transform.position += dur * (count - 1 - i);
 			}
 		}

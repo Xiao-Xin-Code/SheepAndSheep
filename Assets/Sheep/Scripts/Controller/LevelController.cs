@@ -1,5 +1,6 @@
 ﻿using Frame;
 using QMVC;
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ namespace Sheep
 {
     public class LevelController : MonoController
     {
+		[SerializeField] LevelView _levelView;
+
         LevelSystem _levelSystem;
 		AssetSystem _assetSystem;
 		DataModel _dataModel;
@@ -23,6 +26,7 @@ namespace Sheep
 
 			_levelModel.levelState.Register(OnLevelStateChanged);
 
+			_levelView.gameObject.SetActive(false);
 			gameObject.SetActive(false);
 
 		}
@@ -42,6 +46,11 @@ namespace Sheep
 			_levelModel.levelState.Value = LevelState.Runtime;
 			//初始类型数据
 			_levelSystem.InitBlockTypes();
+
+			//更新UI
+			_levelView.SetDate(DateTime.Now.ToString("- MM月dd日 -"));
+
+
 			//初始化关卡
 			this.SendCommand<InitLevelCommand>();
 		}
@@ -55,10 +64,12 @@ namespace Sheep
 					break;
 				case LevelState.Failure:
 					Debug.Log("触发失败");
+					this.SendCommand(new MaskVisibleCommand(true));
 					this.SendCommand<GameOverCommand>();
 					break;
 				case LevelState.Succeed:
-					this.SendCommand<GameSucceedCommand>();
+                    this.SendCommand(new MaskVisibleCommand(true));
+                    this.SendCommand<GameSucceedCommand>();
 					break;
 				default:
 					break;
@@ -69,7 +80,8 @@ namespace Sheep
 		private void LevelVisible(LevelVisibleEvent evt)
 		{
 			gameObject.SetActive(evt.visible);
-		}
+            _levelView.gameObject.SetActive(evt.visible);
+        }
 
 	}
 }

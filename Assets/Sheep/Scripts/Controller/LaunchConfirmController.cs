@@ -11,12 +11,18 @@ namespace Sheep
         [SerializeField] LaunchConfirmView _view;
 
         LevelSystem _levelSystem;
+        LevelModel _levelModel;
         PoolSystem _poolSystem;
+        AudioSystem _audioSystem;
+        DataModel _dataModel;
 
         public override void Init()
         {
             _poolSystem = this.GetSystem<PoolSystem>();
             _levelSystem = this.GetSystem<LevelSystem>();
+            _levelModel = this.GetModel<LevelModel>();
+            _audioSystem = this.GetSystem<AudioSystem>();
+            _dataModel = this.GetModel<DataModel>();
 
             _view.RegisterLaunchPressedEvent(OnLaunchPressed);
             _view.RegisterClosePressedEvent(OnClosePressed);
@@ -30,12 +36,15 @@ namespace Sheep
         {
 			DateTime now = DateTime.Now;
 			_view.SetTime(now.ToString("MM/dd"));
+            //初始设置关卡难度
+            _levelModel.levelup = _dataModel.skipFirstLevel;
 			gameObject.SetActive(true);
         }
 
 
         private void OnLaunchPressed()
         {
+            _audioSystem.StopBGM();
             this.SendCommand(new LaunchTransitionCommand(Hide, 1));
 			_poolSystem.RecycleAllBlock();
 			_levelSystem.ClearBlocks();
@@ -53,7 +62,9 @@ namespace Sheep
         {
             this.SendCommand(new HomeViewVisibleCommand(false));
             this.SendCommand(new LevelVisibleCommand(true));
+            this.SendCommand(new MaskVisibleCommand(false));
             gameObject.SetActive(false);
+            _audioSystem.PlayBGM("BgMusic");
         }
 
     }

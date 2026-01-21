@@ -7,4 +7,6 @@ public class GameConfig : ScriptableObject
 	public bool SfxIsOn = true;
 	public bool ShakeIsOn = false;
 	public string Theme = "Default";
+
+	public bool skipFirstLevel = false;
 }

@@ -42,6 +42,7 @@ namespace Sheep
 			_dataModel.SfxIsOn.Value = config.SfxIsOn;
 			_dataModel.ShakeIsOn.Value = config.ShakeIsOn;
 			_dataModel.Theme.Value = config.Theme;
+			_dataModel.skipFirstLevel = config.skipFirstLevel;
 		}
 
 		/// <summary>

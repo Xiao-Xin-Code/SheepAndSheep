@@ -16,3 +16,4 @@ MonoBehaviour:
   SfxIsOn: 1
   ShakeIsOn: 0
   Theme: Default
+  skipFirstLevel: 1

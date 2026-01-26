@@ -37,7 +37,7 @@ namespace Sheep
 
 			LoadAllAudioClip();
 
-			GameConfig config = JsonUtility.FromJson<GameConfig>(File.ReadAllText(Application.streamingAssetsPath + "/GameConfig"));
+			GameConfig config = JsonUtility.FromJson<GameConfig>(File.ReadAllText(Application.streamingAssetsPath + "/Config/GameConfig"));
 			_dataModel.MusicIsOn.Value = config.musicIson;
 			_dataModel.SfxIsOn.Value = config.sfxIson;
 			_dataModel.ShakeIsOn.Value = config.shakeIson;

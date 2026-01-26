@@ -74,7 +74,12 @@ namespace Sheep
 
 	public class GameOverEvent
 	{
+		public bool canResurrection;
 
+		public GameOverEvent(bool canResurrection)
+		{
+			this.canResurrection = canResurrection;
+		}
 	}
 
 	public class GameSucceedEvent
@@ -121,11 +126,30 @@ namespace Sheep
 		}
 	}
 
+
+	public class LevelSetVisibleEvent
+	{
+		public bool visible;
+
+
+		public LevelSetVisibleEvent(bool visible)
+		{
+			this.visible = visible;
+		}
+
+	}
+
 	#endregion
 
 	public class ClearContainerEvent
 	{
 		
+	}
+
+
+	public class LevelResurrectionEvent
+	{
+
 	}
 
 }

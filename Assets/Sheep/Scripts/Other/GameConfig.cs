@@ -1,12 +1,10 @@
-using UnityEngine;
 
-[CreateAssetMenu(fileName = "GameConfig", menuName = "Config/Game Config")]
-public class GameConfig : ScriptableObject
+public class GameConfig
 {
-	public bool MusicIsOn = true;
-	public bool SfxIsOn = true;
-	public bool ShakeIsOn = false;
-	public string Theme = "Default";
+	public bool musicIson = true;
+	public bool sfxIson = true;
+	public bool shakeIson = false;
+	public string theme = "Default";
 
 	public bool skipFirstLevel = false;
 }

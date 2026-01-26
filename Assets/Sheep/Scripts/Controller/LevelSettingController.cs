@@ -4,9 +4,9 @@ using UnityEngine;
 namespace Sheep
 {
 
-    public class GameOverController : MonoController
+    public class LevelSettingController : MonoController
     {
-        [SerializeField] GameOverView _gameOverView;
+        [SerializeField] LevelSettingView _levelSettingView;
 
         AudioSystem _audioSystem;
 
@@ -15,31 +15,22 @@ namespace Sheep
         {
             _audioSystem = this.GetSystem<AudioSystem>();
 
+            this.RegisterEvent<LevelSetVisibleEvent>(LevelSetVisible);
 
-			_gameOverView.RegisterResurrectionPressed(OnResurrectionPressed);
-            _gameOverView.RegisterCancelPressed(OnCancelPressed);
+            _levelSettingView.RegisterProceedPressed(OnProceedPressed);
+            _levelSettingView.RegisterAbandonPressed(OnAbandonPressed);
 
-			this.RegisterEvent<GameOverEvent>(OnGameOver);
+        }
+
+
+
+
+        private void OnProceedPressed()
+        {
             gameObject.SetActive(false);
         }
 
-
-
-
-        private void OnGameOver(GameOverEvent evt)
-        {
-            gameObject.SetActive(true);
-            
-        }
-
-
-        private void OnResurrectionPressed()
-        {
-            this.SendCommand<LevelResurrectionCommand>();
-        }
-
-
-        private void OnCancelPressed()
+        private void OnAbandonPressed()
         {
 			_audioSystem.StopBGM();
 			_audioSystem.PlaySFX("Click");
@@ -53,6 +44,12 @@ namespace Sheep
 			}, 1));
 		}
 
+
+
+        private void LevelSetVisible(LevelSetVisibleEvent evt)
+        {
+            gameObject.SetActive(evt.visible);
+        }
 	}
 }
 

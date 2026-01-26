@@ -6,6 +6,7 @@ namespace Sheep
     public enum LevelState
     {
         Runtime,
+		FailureWithResurrection,
         Failure,
         Succeed
     }

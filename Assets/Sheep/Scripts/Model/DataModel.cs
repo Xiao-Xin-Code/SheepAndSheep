@@ -7,7 +7,6 @@ namespace Sheep
         Common
     }
 
-
     public class DataModel : AbstractModel
     {
         public BindableProperty<bool> MusicIsOn = new BindableProperty<bool>(true);

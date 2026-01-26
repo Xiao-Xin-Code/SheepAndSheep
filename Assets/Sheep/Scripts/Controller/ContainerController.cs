@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
 using QMVC;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ namespace Sheep
     public class ContainerController : MonoController
     {
         List<BlockController> vessel = new List<BlockController>();
+        List<BlockController> extendVessel = new List<BlockController>();
 
         [SerializeField] ContainerView _view;
 
@@ -22,6 +24,7 @@ namespace Sheep
             _levelModel = this.GetModel<LevelModel>();
 
 			this.RegisterEvent<PlaceToContainerEvent>(PlaceToContainer);
+            this.RegisterEvent<LevelResurrectionEvent>(LevelResurrection);
             this.RegisterEvent<ClearContainerEvent>(ClearContainer);
         }
 
@@ -30,7 +33,6 @@ namespace Sheep
 
         private void Place(BlockController block)
         {
-            Debug.Log("放置Block" + block.content);
             lock (vessel)
             {
                 //容量测试
@@ -73,7 +75,6 @@ namespace Sheep
                 placeCount++;
                 tweener.onPlay = () =>
                 {
-
                     int startIndex = sames.Count == 2 ? insertIndex - 2 : insertIndex + 1;
                     int targetIndex = insertIndex + 1;
                     for (int i = startIndex; i < vessel.Count; ++i)
@@ -90,7 +91,6 @@ namespace Sheep
                 };
                 tweener.onComplete = () =>
                 {
-                    Debug.Log("动画结束触发");
                     if (animMap.ContainsKey(block)) animMap.Remove(block);
                     placeCount--;
                     if (sames.Count == 2)
@@ -119,19 +119,16 @@ namespace Sheep
 
                     if (placeCount == 0)
                     {
-                        Debug.Log("判断");
                         if (vessel.Count == _view.Cells.Length)
                         {
-                            Debug.Log("失败");
-                            _levelModel.levelState.Value = LevelState.Failure;
+                            _levelModel.levelState.Value = extendVessel.Count >= 3 ? LevelState.Failure : LevelState.FailureWithResurrection;
                         }
                         else
                         {
-                            if (!_levelSystem.HasBlocks())
+                            if (!_levelSystem.HasBlocks() && extendVessel.Count == 0) 
                             {
                                 if (vessel.Count == 0)
                                 {
-                                    Debug.Log("成功");
                                     if (_levelModel.levelup)
                                     {
                                         _levelModel.levelState.Value = LevelState.Succeed;
@@ -139,7 +136,6 @@ namespace Sheep
                                     else
                                     {
                                         _levelModel.levelup = true;
-                                        Debug.Log("启动新的");
                                         this.SendCommand(new LaunchTransitionCommand(null, 2));
                                         _poolSystem.RecycleAllBlock();//回收使用的Block
                                         _levelSystem.ClearBlocks();//清空关卡中的Block
@@ -152,18 +148,14 @@ namespace Sheep
                                 else
                                 {
                                     Debug.Log("失败");
-                                    _levelModel.levelState.Value = LevelState.Failure;
+                                    throw new Exception("其余数据已清空，但是vessel任然存在");
+                                    //_levelModel.levelState.Value = LevelState.Failure;
                                 }
                             }
                         }
                     }
-                    else
-                    {
-                        Debug.Log("存在");
-                    }
                 };
             }
-           
         }
 
         private void PlaceToContainer(PlaceToContainerEvent evt)
@@ -175,7 +167,35 @@ namespace Sheep
         {
             placeCount = 0;
             vessel.Clear();
+            extendVessel.Clear();
 		}
-    }
+
+
+        private void LevelResurrection(LevelResurrectionEvent evt)
+        {
+            int needCount = 3 - extendVessel.Count;
+
+            List<BlockController> extendBlocks = new List<BlockController>();
+
+            //获取需要的block
+            for(int i  = 7 - needCount; i < 7; i++)
+            {
+				extendBlocks.Add(vessel[i]);
+            }
+            //从vessel中移除
+            for(int i = 0;i< extendBlocks.Count; i++)
+            {
+                vessel.Remove(extendBlocks[i]);
+                extendVessel.Add(extendBlocks[i]);
+            }
+            //更新ExtendVessel的状态
+            for(int i = 0; i < extendVessel.Count; i++)
+            {
+                extendVessel[i].interactable = true;
+                extendVessel[i].transform.position = _view.ExtendCells[i].position;
+            }
+        }
+
+	}
 
 }

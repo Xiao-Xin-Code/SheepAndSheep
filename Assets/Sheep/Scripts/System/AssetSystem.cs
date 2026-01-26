@@ -37,11 +37,11 @@ namespace Sheep
 
 			LoadAllAudioClip();
 
-			GameConfig config = Resources.Load<GameConfig>("GameConfig");
-			_dataModel.MusicIsOn.Value = config.MusicIsOn;
-			_dataModel.SfxIsOn.Value = config.SfxIsOn;
-			_dataModel.ShakeIsOn.Value = config.ShakeIsOn;
-			_dataModel.Theme.Value = config.Theme;
+			GameConfig config = JsonUtility.FromJson<GameConfig>(File.ReadAllText(Application.streamingAssetsPath + "/GameConfig"));
+			_dataModel.MusicIsOn.Value = config.musicIson;
+			_dataModel.SfxIsOn.Value = config.sfxIson;
+			_dataModel.ShakeIsOn.Value = config.shakeIson;
+			_dataModel.Theme.Value = config.theme;
 			_dataModel.skipFirstLevel = config.skipFirstLevel;
 		}
 

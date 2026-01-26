@@ -105,9 +105,16 @@ namespace Sheep
 
     public class GameOverCommand : AbstractCommand
     {
-        protected override void OnExecute()
+        bool canResurrection;
+
+        public GameOverCommand(bool canResurrection)
         {
-            this.SendEvent<GameOverEvent>();
+            this.canResurrection = canResurrection;
+        }
+
+		protected override void OnExecute()
+        {
+            this.SendEvent(new GameOverEvent(canResurrection));
         }
     }
 
@@ -173,6 +180,31 @@ namespace Sheep
         protected override void OnExecute()
         {
             this.SendEvent(new LevelVisibleEvent(visible));
+        }
+    }
+
+    public class LevelSetVisibleCommand : AbstractCommand
+    {
+        bool visible;
+
+        public LevelSetVisibleCommand(bool visible)
+        {
+            this.visible = visible;
+        }
+
+
+        protected override void OnExecute()
+        {
+            this.SendEvent(new LevelSetVisibleEvent(visible));
+        }
+    }
+
+
+    public class LevelResurrectionCommand : AbstractCommand
+    {
+        protected override void OnExecute()
+        {
+            this.SendEvent<LevelResurrectionEvent>();
         }
     }
 }

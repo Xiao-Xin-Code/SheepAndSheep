@@ -25,6 +25,7 @@ namespace Sheep
 			this.RegisterEvent<LevelVisibleEvent>(LevelVisible);
 
 			_levelModel.levelState.Register(OnLevelStateChanged);
+			_levelView.RegisterSetPressed(OnLevelSetPressed);
 
 			_levelView.gameObject.SetActive(false);
 			gameObject.SetActive(false);
@@ -62,20 +63,36 @@ namespace Sheep
 			{
 				case LevelState.Runtime:
 					break;
+				case LevelState.FailureWithResurrection:
+					this.SendCommand(new MaskVisibleCommand(true));
+
+					this.SendCommand(new GameOverCommand(true));
+					break;
 				case LevelState.Failure:
 					Debug.Log("触发失败");
 					this.SendCommand(new MaskVisibleCommand(true));
-					this.SendCommand<GameOverCommand>();
+
+					//更新成就AchievementSystem
+
+					this.SendCommand(new GameOverCommand(false));
 					break;
 				case LevelState.Succeed:
                     this.SendCommand(new MaskVisibleCommand(true));
-                    this.SendCommand<GameSucceedCommand>();
+
+					//更新成就AchievementSystem
+
+					this.SendCommand<GameSucceedCommand>();
 					break;
 				default:
 					break;
 			}
 		}
 
+
+		private void OnLevelSetPressed()
+		{
+			this.SendCommand(new LevelSetVisibleCommand(true));
+		}
 
 		private void LevelVisible(LevelVisibleEvent evt)
 		{

@@ -69,7 +69,6 @@ namespace Sheep
 					this.SendCommand(new GameOverCommand(true));
 					break;
 				case LevelState.Failure:
-					Debug.Log("触发失败");
 					this.SendCommand(new MaskVisibleCommand(true));
 
 					//更新成就AchievementSystem

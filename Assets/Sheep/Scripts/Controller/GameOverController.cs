@@ -9,14 +9,16 @@ namespace Sheep
         [SerializeField] GameOverView _gameOverView;
 
         AudioSystem _audioSystem;
+        LevelModel _levelModel;
 
 
         public override void Init()
         {
             _audioSystem = this.GetSystem<AudioSystem>();
+            _levelModel = this.GetModel<LevelModel>();
 
 
-			_gameOverView.RegisterResurrectionPressed(OnResurrectionPressed);
+            _gameOverView.RegisterResurrectionPressed(OnResurrectionPressed);
             _gameOverView.RegisterCancelPressed(OnCancelPressed);
 
 			this.RegisterEvent<GameOverEvent>(OnGameOver);
@@ -28,12 +30,14 @@ namespace Sheep
 
         private void OnGameOver(GameOverEvent evt)
         {
+            _gameOverView.SetResurrection(evt.canResurrection);
             gameObject.SetActive(true);
         }
 
 
         private void OnResurrectionPressed()
         {
+            _levelModel.levelState.Value = LevelState.Runtime;
             this.SendCommand<LevelResurrectionCommand>();
 			this.SendCommand(new MaskVisibleCommand(false));
 			gameObject.SetActive(false);

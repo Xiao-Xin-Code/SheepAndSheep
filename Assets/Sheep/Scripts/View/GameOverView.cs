@@ -38,6 +38,12 @@ namespace Sheep
         }
 
 		#endregion
+        
+
+        public void SetResurrection(bool isAllow)
+        {
+            resurrection.interactable = isAllow;
+        }
 
 	}
 }

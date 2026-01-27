@@ -103,6 +103,23 @@ namespace Sheep
         }
     }
 
+    public class RemoveInExtendCommand : AbstractCommand
+    {
+        BlockController block;
+
+        public RemoveInExtendCommand(BlockController block)
+        {
+            this.block = block;
+        }
+
+        protected override void OnExecute()
+        {
+            this.SendEvent(new RemoveInExtendEvent(block));
+        }
+    }
+
+
+
     public class GameOverCommand : AbstractCommand
     {
         bool canResurrection;

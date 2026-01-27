@@ -72,6 +72,17 @@ namespace Sheep
 		}
 	}
 
+	public class RemoveInExtendEvent
+	{
+		public BlockController block;
+
+		public RemoveInExtendEvent(BlockController block)
+		{
+			this.block = block;
+		}
+	}
+
+
 	public class GameOverEvent
 	{
 		public bool canResurrection;

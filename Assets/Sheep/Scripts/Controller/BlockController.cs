@@ -51,7 +51,9 @@ namespace Sheep
 			if (interactable)
 			{
 				_entity.Interactable.SetValueWithoutEvent(false);
+
 				this.SendCommand(new RemoveInGridsCommand(this));
+				this.SendCommand(new RemoveInExtendCommand(this));
 				_audioSystem.PlaySFX("Click");
 				this.SendCommand(new PlaceToContainerCommand(this));
 			}

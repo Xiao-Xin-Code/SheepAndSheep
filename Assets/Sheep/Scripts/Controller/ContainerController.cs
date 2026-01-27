@@ -26,6 +26,7 @@ namespace Sheep
 			this.RegisterEvent<PlaceToContainerEvent>(PlaceToContainer);
             this.RegisterEvent<LevelResurrectionEvent>(LevelResurrection);
             this.RegisterEvent<ClearContainerEvent>(ClearContainer);
+            this.RegisterEvent<RemoveInExtendEvent>(RemoveInExtend);
         }
 
         public int placeCount = 0;
@@ -173,6 +174,7 @@ namespace Sheep
 
         private void LevelResurrection(LevelResurrectionEvent evt)
         {
+            Debug.Log(extendVessel.Count);
             int needCount = 3 - extendVessel.Count;
 
             List<BlockController> extendBlocks = new List<BlockController>();
@@ -195,6 +197,12 @@ namespace Sheep
                 extendVessel[i].transform.position = _view.ExtendCells[i].position;
             }
         }
+
+
+        private void RemoveInExtend(RemoveInExtendEvent evt)
+        {
+            extendVessel.Remove(evt.block);
+		}
 
 	}
 

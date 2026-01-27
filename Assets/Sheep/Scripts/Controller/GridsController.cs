@@ -56,7 +56,10 @@ namespace Sheep
 
         private void OnRemoveInGrids(RemoveInGridsEvent evt)
         {
-            Remove(evt.block);
+			if (_levelSystem.GetBlock(evt.block.ID))
+			{
+				Remove(evt.block);
+			}
 		}
 
 
@@ -101,6 +104,7 @@ namespace Sheep
 		{
 			Vector2 position = Vector2.zero;
 			int id = this.id++;//ªÒ»°ID
+			block.ID = id;
 			foreach (var item in block.OccupiedCells)
 			{
 				Debug.Log($"{item.x},{item.y}");

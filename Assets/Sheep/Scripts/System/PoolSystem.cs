@@ -56,4 +56,9 @@ public class PoolSystem : AbstractSystem
 	{
 		sfxPool.Recycle(source);
 	}
+
+	public void RecycleAllSFX()
+	{
+		sfxPool.RecycleAll(sfx => sfx.Stop());
+	}
 }

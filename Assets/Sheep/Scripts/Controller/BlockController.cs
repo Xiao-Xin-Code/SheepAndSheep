@@ -20,7 +20,7 @@ namespace Sheep
 
 		public Vector2Int[] OccupiedCells { get => _entity.occupiedCells; set => _entity.occupiedCells = value; }
 
-		public int ID { get => _entity.ID; }
+		public int ID { get => _entity.ID; set => _entity.ID = value; }
 		#endregion
 
 

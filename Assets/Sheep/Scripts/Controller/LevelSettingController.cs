@@ -9,6 +9,7 @@ namespace Sheep
         [SerializeField] LevelSettingView _levelSettingView;
 
         AudioSystem _audioSystem;
+        PoolSystem _poolSystem;
 
 
         public override void Init()
@@ -19,7 +20,11 @@ namespace Sheep
 
             _levelSettingView.RegisterProceedPressed(OnProceedPressed);
             _levelSettingView.RegisterAbandonPressed(OnAbandonPressed);
+            _levelSettingView.RegisterMusicIsonChanged(OnMusicIsonChanged);
+            _levelSettingView.RegiterSfxIsonChanged(OnSfxIsonChanged);
+            _levelSettingView.RegisterShakeIsonChanged(OnShakeIsonChanged);
 
+            gameObject.SetActive(false);
         }
 
 
@@ -49,6 +54,36 @@ namespace Sheep
         private void LevelSetVisible(LevelSetVisibleEvent evt)
         {
             gameObject.SetActive(evt.visible);
+        }
+
+
+        private void OnMusicIsonChanged(bool isOn)
+        {
+            if (isOn)
+            {
+                _audioSystem.LaunchBGM();
+            }
+            else
+            {
+                _audioSystem.StopBGM();
+            }
+        }
+
+        private void OnSfxIsonChanged(bool isOn)
+        {
+            if (isOn)
+            {
+
+            }
+            else
+            {
+                _poolSystem.RecycleAllSFX();
+            }
+        }
+
+        private void OnShakeIsonChanged(bool isOn)
+        {
+
         }
 	}
 }

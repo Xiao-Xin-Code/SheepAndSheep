@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -51,12 +52,13 @@ public class ComponentPool<T> : IPool<T> where T : Component
 		}
 	}
 
-	public void RecycleAll()
+	public void RecycleAll(Action<T> recycleEvent = null)
 	{
 		var itemsToRecycle = new HashSet<T>(_activeItems);
 		_activeItems.Clear();
 		foreach (var item in itemsToRecycle)
 		{
+			recycleEvent?.Invoke(item);
 			item.gameObject.SetActive(false);
 			item.transform.SetParent(_parent);
 			_pool.Enqueue(item);

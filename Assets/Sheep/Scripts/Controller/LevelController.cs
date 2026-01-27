@@ -1,7 +1,5 @@
-﻿using Frame;
-using QMVC;
+﻿using QMVC;
 using System;
-using UnityEditor;
 using UnityEngine;
 
 namespace Sheep

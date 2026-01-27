@@ -29,13 +29,14 @@ namespace Sheep
         private void OnGameOver(GameOverEvent evt)
         {
             gameObject.SetActive(true);
-            
         }
 
 
         private void OnResurrectionPressed()
         {
             this.SendCommand<LevelResurrectionCommand>();
+			this.SendCommand(new MaskVisibleCommand(false));
+			gameObject.SetActive(false);
         }
 
 

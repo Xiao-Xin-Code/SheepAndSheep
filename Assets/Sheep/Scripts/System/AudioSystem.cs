@@ -11,6 +11,7 @@ namespace Sheep
     {
         PoolSystem _poolSystem;
         AssetSystem _assetSystem;
+        DataModel _dataModel;
 
         AudioSource _bgmSource;
         float _bgmVolume = 1;
@@ -21,6 +22,7 @@ namespace Sheep
         {
             _poolSystem = this.GetSystem<PoolSystem>();
             _assetSystem = this.GetSystem<AssetSystem>();
+            _dataModel = this.GetModel<DataModel>();
 			_bgmSource = new GameObject("BGM").AddComponent<AudioSource>();
 
             //_poolSystem.GetBGM().
@@ -30,13 +32,16 @@ namespace Sheep
 
 		#region BGM
 
+        public void LaunchBGM()
+        {
+            _bgmSource.Play();
+        }
+
 		public void PlayBGM(string clip, bool isLoop = true)
         {
             AudioClip audioClip = _assetSystem.GetBGM(clip);
             PlayBGM(audioClip, isLoop);
 		}
-
-
 
 		public void PlayBGM(AudioClip clip,bool isLoop = true)
         {
@@ -59,8 +64,11 @@ namespace Sheep
                 _bgmSource.clip = clip;
                 _bgmSource.loop = isLoop;
                 _bgmSource.volume = 0;
-                _bgmSource.Play();
-                _bgmFadCoroutine = MonoService.Instance.StartCoroutine(FadeInBGM());
+                if (_dataModel.MusicIsOn.Value)
+                {
+					_bgmSource.Play();
+					_bgmFadCoroutine = MonoService.Instance.StartCoroutine(FadeInBGM());
+				}
             }
         }
 
@@ -129,8 +137,11 @@ namespace Sheep
 
 		public void PlaySFX(string clip, float volume = 1f)
 		{
-            AudioClip audioClip = _assetSystem.GetSFX(clip);
-            PlaySFX(audioClip, volume);
+            if (_dataModel.SfxIsOn.Value)
+            {
+				AudioClip audioClip = _assetSystem.GetSFX(clip);
+				PlaySFX(audioClip, volume);
+			}
 		}
 
 		public void PlaySFX(AudioClip clip, float volume = 1f)

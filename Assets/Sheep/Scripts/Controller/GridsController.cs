@@ -1,6 +1,5 @@
 using QMVC;
 using UnityEngine;
-using static Codice.Client.Commands.WkTree.WorkspaceTreeNode;
 
 namespace Sheep
 {
@@ -25,8 +24,8 @@ namespace Sheep
 		private void OnInitLevel(InitLevelEvent evt)
         {
 			InitializeGrids(_levelModel.width, _levelModel.height, _levelModel.center);
-
-            for(int i = 1; i < _levelModel.level.Length; i++)
+			id = 0;
+			for (int i = 1; i < _levelModel.level.Length; i++)
             {
                 CreateLevelBlock(_levelModel.level[i]);
 			}

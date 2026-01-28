@@ -1,3 +1,5 @@
+#if UNITY_EDITOR
+
 using System.IO;
 using UnityEditor;
 
@@ -51,3 +53,5 @@ public class QMVCFolderCreate
 		return path;
 	}
 }
+
+#endif

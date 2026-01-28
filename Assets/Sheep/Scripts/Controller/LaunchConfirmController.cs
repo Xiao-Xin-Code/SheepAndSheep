@@ -35,7 +35,7 @@ namespace Sheep
         private void JoinCallBack(JoinEvent evt)
         {
 			DateTime now = DateTime.Now;
-			_view.SetTime(now.ToString("MM/dd"));
+			_view.SetTime(now.ToString("- MM月dd日 -"));
             //初始设置关卡难度
             _levelModel.levelup = _dataModel.skipFirstLevel;
 			gameObject.SetActive(true);

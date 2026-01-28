@@ -16,6 +16,7 @@ namespace Sheep
 
             this.RegisterEvent<UnFoldMenuEvent>(UnFoldMenu);
             _view.RegisterTakeBackPressedEvent(TakeBackMenu);
+            _view.RegisterSetPressedEvent(OpenSetting);
             _view.RegisterExitEvent(Exit);
 
             gameObject.SetActive(false);
@@ -24,6 +25,7 @@ namespace Sheep
 
         private void UnFoldMenu(UnFoldMenuEvent evt)
         {
+            this.SendCommand(new MaskVisibleCommand(true));
             gameObject.SetActive(true);
             DOTween.Kill(_view.RectTransform);
             _view.RectTransform.DOAnchorPosX(0, 0.5f).SetEase(Ease.Linear);
@@ -33,21 +35,33 @@ namespace Sheep
         {
             _audioSystem.PlaySFX("Click");
             DOTween.Kill(_view.RectTransform);
-            _view.RectTransform.DOAnchorPosX(-_view.RectTransform.rect.width, 0.5f).SetEase(Ease.Linear).OnComplete(() => gameObject.SetActive(false));
+            _view.RectTransform.DOAnchorPosX(-_view.RectTransform.rect.width, 0.5f).SetEase(Ease.Linear).OnComplete(() => {
+                gameObject.SetActive(false);
+                this.SendCommand(new MaskVisibleCommand(false));
+            });
+            
         }
 
 
         private void OpenSetting()
         {
-            this.SendCommand(new SettingVisibleCommand(true));
+            DOTween.Kill(_view.RectTransform);
+            _view.RectTransform.DOAnchorPosX(-_view.RectTransform.rect.width, 0.1f).SetEase(Ease.Linear).OnComplete(() => {
+                gameObject.SetActive(false);
+                this.SendCommand(new SettingVisibleCommand(true));
+            });
+           
         }
 
         private void Exit()
         {
-        #if !UNITY_EDITOR
+#if !UNITY_EDITOR
             Application.Quit();
-        #endif
-		}
+#elif UNITY_EDITOR
+            Debug.Log("ÍË³ö");
+#endif
+
+        }
 	}
 }
 

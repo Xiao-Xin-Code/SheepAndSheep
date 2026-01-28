@@ -1,3 +1,5 @@
+#if UNITY_EDITOR
+
 using System.IO;
 using UnityEngine;
 
@@ -22,3 +24,5 @@ public class AssetCreate : MonoBehaviour
 		}
 	}
 }
+
+#endif

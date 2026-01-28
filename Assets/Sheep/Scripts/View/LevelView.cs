@@ -9,7 +9,9 @@ namespace Sheep
 
         [SerializeField] Button setting;
         [SerializeField] Text dateText;
-        
+        [SerializeField] GameObject level1Frag;
+        [SerializeField] GameObject level2Frag;
+
         public void SetDate(string date)
         {
             dateText.text = date;
@@ -25,7 +27,6 @@ namespace Sheep
 
         #endregion
 
-
         #region UnRegister
 
         public void UnRegisterSetPressed(UnityAction action)
@@ -34,6 +35,12 @@ namespace Sheep
         }
 
         #endregion
+
+        public void SetLevelFrag(bool isLevelUp)
+        {
+            level1Frag.SetActive(!isLevelUp);
+            level2Frag.SetActive(isLevelUp);
+        }
     }
 
 }

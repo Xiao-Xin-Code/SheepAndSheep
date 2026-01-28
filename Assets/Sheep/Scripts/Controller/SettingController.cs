@@ -16,13 +16,22 @@ namespace Sheep
         {
 			_audioSystem = this.GetSystem<AudioSystem>();
 			_poolSystem = this.GetSystem<PoolSystem>();
+			_dataModel = this.GetModel<DataModel>();
 
 			_settingView.RegisterMusicIsonChanged(OnMusicIsonChanged);
             _settingView.RegisterSfxIsonChanged(OnSfxIsonChanged);
             _settingView.RegisterShakeIsonChanged(OnShakeIsonChanged);
             _settingView.RegisterSkipLevelChanged(OnSkipLevelChanged);
+			_settingView.RegisterClosePressed(OnClosePressed);
 
 			this.RegisterEvent<SettingVisibleEvent>(SettingVisible);
+
+
+			_settingView.SetMusicIsonWithoutNotify(_dataModel.MusicIsOn.Value);
+			_settingView.SetSfxIsonWithoutNotify(_dataModel.SfxIsOn.Value);
+			_settingView.SetShakeIsonWithoutNotify(_dataModel.ShakeIsOn.Value);
+			_settingView.SetSkipIsonWithoutNotify(_dataModel.skipFirstLevel);
+
 
             gameObject.SetActive(false);
         }
@@ -31,17 +40,15 @@ namespace Sheep
 
         private void OnMusicIsonChanged(bool isOn)
         {
-
-			if (isOn)
+            _dataModel.MusicIsOn.Value = isOn;
+            if (isOn)
 			{
-				_audioSystem.LaunchBGM();
+				_audioSystem.PlayBGM("MainMusic");
 			}
 			else
 			{
 				_audioSystem.StopBGM();
 			}
-
-			_dataModel.MusicIsOn.Value = isOn;
 		}
 
         private void OnSfxIsonChanged(bool isOn)
@@ -69,10 +76,18 @@ namespace Sheep
         }
 
 
+		private void OnClosePressed()
+		{
+			gameObject.SetActive(false);
+            this.SendCommand(new MaskVisibleCommand(false));
+        }
+
+
 		private void SettingVisible(SettingVisibleEvent evt)
 		{
 			gameObject.SetActive(evt.visible);
-		}
+            this.SendCommand(new MaskVisibleCommand(evt.visible));
+        }
     }
 
 }

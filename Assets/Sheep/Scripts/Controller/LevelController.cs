@@ -48,6 +48,7 @@ namespace Sheep
 
 			//更新UI
 			_levelView.SetDate(DateTime.Now.ToString("- MM月dd日 -"));
+			_levelView.SetLevelFrag(_levelModel.levelup);
 
 			//初始化关卡
 			this.SendCommand<InitLevelCommand>();

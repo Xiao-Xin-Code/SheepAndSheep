@@ -34,19 +34,35 @@ namespace Sheep
             _audioSystem.PlaySFX("Click");
 
             //ÒÆ¶¯¸²¸Ç
-			_view.RectTransform.DOAnchorPosX(-_view.RectTransform.rect.width, 1).SetEase(Ease.Linear).OnComplete(() =>
-			{
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append(_view.RectTransform.DOAnchorPosX(-_view.RectTransform.rect.width, 1).SetEase(Ease.Linear));
+            if(evt.state == 2) sequence.AppendInterval(0.5f);
+            sequence.OnComplete(() =>
+            {
                 evt.Trigger();
-				if (_levelModel.isLevelOver)
-				{
-					TransitionEnd();
-				}
-				else
-				{
-					StartCoroutine(WaitLevelLoadOver());
-				}
-			});
-		}
+                if (_levelModel.isLevelOver)
+                {
+                    TransitionEnd();
+                }
+                else
+                {
+                    StartCoroutine(WaitLevelLoadOver());
+                }
+            });
+            sequence.Play();
+            //_view.RectTransform.DOAnchorPosX(-_view.RectTransform.rect.width, 1).SetEase(Ease.Linear).OnComplete(() =>
+            //{
+            //    evt.Trigger();
+            //    if (_levelModel.isLevelOver)
+            //    {
+            //        TransitionEnd();
+            //    }
+            //    else
+            //    {
+            //        StartCoroutine(WaitLevelLoadOver());
+            //    }
+            //});
+        }
 
         private void TransitionEnd()
         {

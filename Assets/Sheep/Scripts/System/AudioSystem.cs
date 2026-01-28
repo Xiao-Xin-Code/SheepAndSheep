@@ -54,7 +54,7 @@ namespace Sheep
             {
                 MonoService.Instance.StopCoroutine(_bgmFadCoroutine);
             }
-
+            Debug.Log(_bgmSource.isPlaying);
             if (_bgmSource.isPlaying)
             {
                 _bgmFadCoroutine = MonoService.Instance.StartCoroutine(FadeOutAndSwitchBGM(clip, isLoop));

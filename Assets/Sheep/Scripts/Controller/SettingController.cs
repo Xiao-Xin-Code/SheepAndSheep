@@ -22,6 +22,7 @@ namespace Sheep
             _settingView.RegisterShakeIsonChanged(OnShakeIsonChanged);
             _settingView.RegisterSkipLevelChanged(OnSkipLevelChanged);
 
+			this.RegisterEvent<SettingVisibleEvent>(SettingVisible);
 
             gameObject.SetActive(false);
         }
@@ -66,6 +67,12 @@ namespace Sheep
         {
 
         }
+
+
+		private void SettingVisible(SettingVisibleEvent evt)
+		{
+			gameObject.SetActive(evt.visible);
+		}
     }
 
 }

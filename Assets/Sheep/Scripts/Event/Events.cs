@@ -150,6 +150,17 @@ namespace Sheep
 
 	}
 
+
+	public class SettingVisibleEvent
+	{
+		public bool visible;
+
+		public SettingVisibleEvent(bool visible)
+		{
+			this.visible = visible;
+		}
+	}
+
 	#endregion
 
 	public class ClearContainerEvent

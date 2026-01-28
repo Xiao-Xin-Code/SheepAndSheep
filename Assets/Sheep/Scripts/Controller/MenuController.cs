@@ -39,7 +39,7 @@ namespace Sheep
 
         private void OpenSetting()
         {
-
+            this.SendCommand(new SettingVisibleCommand(true));
         }
 
         private void Exit()

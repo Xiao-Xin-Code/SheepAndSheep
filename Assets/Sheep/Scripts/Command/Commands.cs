@@ -216,6 +216,21 @@ namespace Sheep
         }
     }
 
+    public class SettingVisibleCommand : AbstractCommand
+    {
+        bool visible;
+
+        public SettingVisibleCommand(bool visible)
+        {
+            this.visible = visible;
+        }
+
+        protected override void OnExecute()
+        {
+            this.SendEvent(new SettingVisibleEvent(visible));
+        }
+    }
+
 
     public class LevelResurrectionCommand : AbstractCommand
     {

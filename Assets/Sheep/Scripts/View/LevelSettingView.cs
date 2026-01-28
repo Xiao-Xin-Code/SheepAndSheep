@@ -12,7 +12,7 @@ namespace Sheep
         [SerializeField] Toggle sfxIson;
         [SerializeField] Toggle shakeIson;
 
-        [SerializeField] Button proceed;
+        [SerializeField] Button close;
         [SerializeField] Button abandon;
 
 
@@ -34,9 +34,9 @@ namespace Sheep
         }
 
 
-        public void RegisterProceedPressed(UnityAction action)
+        public void RegisterClosePressed(UnityAction action)
         {
-            proceed?.onClick.AddListener(action);
+            close?.onClick.AddListener(action);
         }
 
         public void RegisterAbandonPressed(UnityAction action)
@@ -65,9 +65,9 @@ namespace Sheep
             shakeIson?.onValueChanged.RemoveListener(action);
         }
 
-        public void UnRegisterProceedPressed(UnityAction action)
+        public void UnRegisterClosePressed(UnityAction action)
         {
-            proceed?.onClick.RemoveListener(action);
+            close?.onClick.RemoveListener(action);
         }
 
         public void UnRegisterAbandonPressed(UnityAction action)

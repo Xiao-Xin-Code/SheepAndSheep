@@ -16,6 +16,7 @@ namespace Sheep
 
             this.RegisterEvent<UnFoldMenuEvent>(UnFoldMenu);
             _view.RegisterTakeBackPressedEvent(TakeBackMenu);
+            _view.RegisterExitEvent(Exit);
 
             gameObject.SetActive(false);
         }
@@ -34,7 +35,20 @@ namespace Sheep
             DOTween.Kill(_view.RectTransform);
             _view.RectTransform.DOAnchorPosX(-_view.RectTransform.rect.width, 0.5f).SetEase(Ease.Linear).OnComplete(() => gameObject.SetActive(false));
         }
-    }
+
+
+        private void OpenSetting()
+        {
+
+        }
+
+        private void Exit()
+        {
+        #if !UNITY_EDITOR
+            Application.Quit();
+        #endif
+		}
+	}
 }
 
 

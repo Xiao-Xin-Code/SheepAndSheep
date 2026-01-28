@@ -10,15 +10,18 @@ namespace Sheep
 
         AudioSystem _audioSystem;
         PoolSystem _poolSystem;
+        DataModel _dataModel;
 
 
         public override void Init()
         {
             _audioSystem = this.GetSystem<AudioSystem>();
+            _poolSystem = this.GetSystem<PoolSystem>();
+            _dataModel = this.GetModel<DataModel>();
 
             this.RegisterEvent<LevelSetVisibleEvent>(LevelSetVisible);
 
-            _levelSettingView.RegisterProceedPressed(OnProceedPressed);
+            _levelSettingView.RegisterClosePressed(OnClosePressed);
             _levelSettingView.RegisterAbandonPressed(OnAbandonPressed);
             _levelSettingView.RegisterMusicIsonChanged(OnMusicIsonChanged);
             _levelSettingView.RegiterSfxIsonChanged(OnSfxIsonChanged);
@@ -30,7 +33,7 @@ namespace Sheep
 
 
 
-        private void OnProceedPressed()
+        private void OnClosePressed()
         {
             gameObject.SetActive(false);
         }
@@ -50,7 +53,6 @@ namespace Sheep
 		}
 
 
-
         private void LevelSetVisible(LevelSetVisibleEvent evt)
         {
             gameObject.SetActive(evt.visible);
@@ -67,6 +69,8 @@ namespace Sheep
             {
                 _audioSystem.StopBGM();
             }
+
+            _dataModel.MusicIsOn.Value = isOn;
         }
 
         private void OnSfxIsonChanged(bool isOn)
@@ -79,6 +83,8 @@ namespace Sheep
             {
                 _poolSystem.RecycleAllSFX();
             }
+
+            _dataModel.SfxIsOn.Value = isOn;
         }
 
         private void OnShakeIsonChanged(bool isOn)

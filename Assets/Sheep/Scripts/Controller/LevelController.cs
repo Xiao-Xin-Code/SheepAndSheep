@@ -49,7 +49,6 @@ namespace Sheep
 			//更新UI
 			_levelView.SetDate(DateTime.Now.ToString("- MM月dd日 -"));
 
-
 			//初始化关卡
 			this.SendCommand<InitLevelCommand>();
 		}
@@ -63,21 +62,14 @@ namespace Sheep
 					break;
 				case LevelState.FailureWithResurrection:
 					this.SendCommand(new MaskVisibleCommand(true));
-
 					this.SendCommand(new GameOverCommand(true));
 					break;
 				case LevelState.Failure:
 					this.SendCommand(new MaskVisibleCommand(true));
-
-					//更新成就AchievementSystem
-
 					this.SendCommand(new GameOverCommand(false));
 					break;
 				case LevelState.Succeed:
                     this.SendCommand(new MaskVisibleCommand(true));
-
-					//更新成就AchievementSystem
-
 					this.SendCommand<GameSucceedCommand>();
 					break;
 				default:

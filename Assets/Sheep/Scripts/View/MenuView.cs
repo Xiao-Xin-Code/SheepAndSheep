@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -10,6 +9,13 @@ namespace Sheep
 		[SerializeField] RectTransform rectTransform;
 		[SerializeField] Button takeback;
 
+
+		[SerializeField] Button setting;
+		[SerializeField] Button exit;
+
+
+
+
 		public RectTransform RectTransform => rectTransform;
 
 
@@ -20,6 +26,16 @@ namespace Sheep
 			takeback?.onClick.AddListener(action);
 		}
 
+		public void RegisterSetPressedEvent(UnityAction action)
+		{
+			setting?.onClick.AddListener(action);
+		}
+
+		public void RegisterExitEvent(UnityAction action)
+		{
+			exit?.onClick.AddListener(action);
+		}
+
 		#endregion
 
 
@@ -28,6 +44,16 @@ namespace Sheep
 		public void UnRegisterTakeBackPressedEvent(UnityAction action)
 		{
 			takeback?.onClick.RemoveListener(action);
+		}
+
+		public void UnRegisterSettingEvent(UnityAction action)
+		{
+			setting?.onClick.RemoveListener(action);
+		}
+
+		public void UnRegisterExitEvent(UnityAction action)
+		{
+			exit?.onClick.RemoveListener(action);
 		}
 
 		#endregion

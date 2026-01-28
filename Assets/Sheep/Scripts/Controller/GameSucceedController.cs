@@ -20,6 +20,7 @@ namespace Sheep
 
         private void OnGameSucceed(GameSucceedEvent evt)
         {
+            //更新成就
             gameObject.SetActive(true);
         }
 

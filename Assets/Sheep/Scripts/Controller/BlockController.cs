@@ -47,7 +47,6 @@ namespace Sheep
 
         public void OnPointerClick(PointerEventData eventData)
         {
-			Debug.Log("µã»÷");
 			if (interactable)
 			{
 				_entity.Interactable.SetValueWithoutEvent(false);

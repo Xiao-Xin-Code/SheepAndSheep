@@ -1,6 +1,7 @@
+using DG.Tweening.Plugins.Core.PathCore;
+using QMVC;
 using System.Collections.Generic;
 using System.IO;
-using QMVC;
 using UnityEngine;
 
 namespace Sheep
@@ -17,7 +18,9 @@ namespace Sheep
 		private Dictionary<string, AudioClip> bgms;
 		private Dictionary<string, AudioClip> sfxs;
 
-		DataModel _dataModel;
+		TextAsset[] assets;
+
+        DataModel _dataModel;
 
 		public Sprite BgSprite { get => bgSprite; }
 		public Sprite MaskSprite { get => maskSprite; }
@@ -31,18 +34,47 @@ namespace Sheep
 			sfx = Resources.Load<SFXController>("SFX");
             block = Resources.Load<BlockController>("Item");
 			
-			
-			string levelPath = Application.streamingAssetsPath + "/Level";
-			_dataModel.levelPaths = Directory.GetFiles(levelPath,"*.txt");
 
-			LoadAllAudioClip();
+			if(Application.platform == RuntimePlatform.Android)
+			{
+                TextAsset[] tempAssets = Resources.LoadAll<TextAsset>("Level");
+				TextAsset defaultAsset = Resources.Load<TextAsset>("Default/level_0");
+				assets = new TextAsset[tempAssets.Length + 1];
 
-			GameConfig config = JsonUtility.FromJson<GameConfig>(File.ReadAllText(Application.streamingAssetsPath + "/Config/GameConfig"));
-			_dataModel.MusicIsOn.Value = config.musicIson;
-			_dataModel.SfxIsOn.Value = config.sfxIson;
-			_dataModel.ShakeIsOn.Value = config.shakeIson;
-			_dataModel.Theme.Value = config.theme;
-			_dataModel.skipFirstLevel = config.skipFirstLevel;
+				assets[0] = defaultAsset;
+				for(int i = 0; i < tempAssets.Length; i++)
+				{
+					assets[i + 1] = tempAssets[i];
+				}
+
+                LoadAllAudioClip();
+
+				TextAsset configText = Resources.Load<TextAsset>("Config/GameConfig");
+
+				if (configText == null) Application.Quit();
+
+                GameConfig config = JsonUtility.FromJson<GameConfig>(configText?.text);
+                _dataModel.MusicIsOn.Value = config.musicIson;
+                _dataModel.SfxIsOn.Value = config.sfxIson;
+                _dataModel.ShakeIsOn.Value = config.shakeIson;
+                _dataModel.Theme.Value = config.theme;
+                _dataModel.skipFirstLevel = config.skipFirstLevel;
+
+            }
+			else
+			{
+                string levelPath = Application.streamingAssetsPath + "/Level";
+                _dataModel.levelPaths = Directory.GetFiles(levelPath, "*.txt");
+
+                LoadAllAudioClip();
+
+                GameConfig config = JsonUtility.FromJson<GameConfig>(File.ReadAllText(Application.streamingAssetsPath + "/Config/GameConfig"));
+                _dataModel.MusicIsOn.Value = config.musicIson;
+                _dataModel.SfxIsOn.Value = config.sfxIson;
+                _dataModel.ShakeIsOn.Value = config.shakeIson;
+                _dataModel.Theme.Value = config.theme;
+                _dataModel.skipFirstLevel = config.skipFirstLevel;
+            }
 		}
 
 		/// <summary>
@@ -74,15 +106,42 @@ namespace Sheep
 
 		public string[] GetDefaultLevel()
 		{
-			string[] lines = File.ReadAllLines(_dataModel.levelPaths[0]);
-			return lines;
+            if (Application.platform == RuntimePlatform.Android)
+			{
+                TextAsset asset = assets[0];
+                if (asset == null) return new string[0];
+
+                return asset.text.Split(
+                    new[] { '\n', '\r' },
+                    System.StringSplitOptions.RemoveEmptyEntries
+                );
+            }
+			else
+			{
+                string[] lines = File.ReadAllLines(_dataModel.levelPaths[0]);
+                return lines;
+            }
 		}
 
 		public string[] GetLevel()
 		{
-			int index = Random.Range(1, _dataModel.levelPaths.Length);
-			string[] lines = File.ReadAllLines(_dataModel.levelPaths[index]);
-			return lines;
+            if (Application.platform == RuntimePlatform.Android)
+            {
+				int index = Random.Range(1, assets.Length);
+                TextAsset asset = assets[index];
+                if (asset == null) return new string[0];
+
+                return asset.text.Split(
+                    new[] { '\n', '\r' },
+                    System.StringSplitOptions.RemoveEmptyEntries
+                );
+            }
+			else
+			{
+                int index = Random.Range(1, _dataModel.levelPaths.Length);
+                string[] lines = File.ReadAllLines(_dataModel.levelPaths[index]);
+                return lines;
+            }
 		}
 
 		#endregion
@@ -145,7 +204,6 @@ namespace Sheep
 			this.sfxs = new Dictionary<string, AudioClip>();
 			AudioClip[] bgms = Resources.LoadAll<AudioClip>($"Audio/BGM");
 			AudioClip[] sfxs = Resources.LoadAll<AudioClip>($"Audio/SFX");
-			Debug.Log(sfxs.Length);
 			foreach (var item in bgms)
 			{
 				this.bgms.Add(item.name, item);
@@ -158,6 +216,45 @@ namespace Sheep
 
 	}
 
+
+    
+
+}
+
+public static class ResourcesExtensions
+{
+    // 扩展方法：直接加载string
+    public static string LoadText(this Resources _, string path)
+    {
+        TextAsset asset = Resources.Load<TextAsset>(path);
+        return asset?.text;
+    }
+
+    // 扩展方法：直接加载string数组（行）
+    public static string[] LoadLines(this Resources _, string path)
+    {
+        TextAsset asset = Resources.Load<TextAsset>(path);
+        if (asset == null) return new string[0];
+
+        return asset.text.Split(
+            new[] { '\n', '\r' },
+            System.StringSplitOptions.RemoveEmptyEntries
+        );
+    }
+
+    // 扩展方法：直接加载所有文本资源
+    public static string[] LoadAllTexts(this Resources _, string folderPath)
+    {
+        TextAsset[] assets = Resources.LoadAll<TextAsset>(folderPath);
+        string[] texts = new string[assets.Length];
+
+        for (int i = 0; i < assets.Length; i++)
+        {
+            texts[i] = assets[i].text;
+        }
+
+        return texts;
+    }
 }
 
 

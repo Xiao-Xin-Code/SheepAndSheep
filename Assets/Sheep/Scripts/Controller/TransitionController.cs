@@ -30,7 +30,6 @@ namespace Sheep
 			_view.SheepGroup.SetActive(evt.state == 1);
 			_view.LevelUp.SetActive(evt.state == 2);
 			gameObject.SetActive(true);
-            Debug.Log("¹ý¶É");
             _audioSystem.PlaySFX("Click");
 
             //ÒÆ¶¯¸²¸Ç

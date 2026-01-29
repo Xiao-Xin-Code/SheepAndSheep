@@ -57,9 +57,9 @@ namespace Sheep
 
         void BeginProgress()
         {
-            DOTween.Kill(_view.SheepTransform);
-			_view.SheepTransform.position = path[0];
-			_view.SheepTransform.DOPath(path, duration).SetOptions(true).SetEase(Ease.Linear).SetLoops(-1).OnUpdate(UpdateSheepDirection);
+            //DOTween.Kill(_view.SheepTransform);
+			//_view.SheepTransform.position = path[0];
+			//_view.SheepTransform.DOPath(path, duration).SetOptions(true).SetEase(Ease.Linear).SetLoops(-1).OnUpdate(UpdateSheepDirection);
 			if (coroutine != null)
             {
                 StopCoroutine(coroutine);

@@ -174,7 +174,6 @@ namespace Sheep
 
         private void LevelResurrection(LevelResurrectionEvent evt)
         {
-            Debug.Log(extendVessel.Count);
             int needCount = 3 - extendVessel.Count;
 
             List<BlockController> extendBlocks = new List<BlockController>();

@@ -76,7 +76,6 @@ namespace Sheep
 			Transform block = Resources.Load<Transform>("Grid");
 
 			grids = new GridController[height][];
-            Debug.Log("创建W" + height);
             float startY = height * 0.6f / 2 - 0.3f;
 			float startX = -width * 0.6f / 2 + 0.3f;
 
@@ -84,7 +83,6 @@ namespace Sheep
 			{
 				float curY = startY - h * 0.6f;
 				grids[h] = new GridController[width];
-				Debug.Log("创建W" + width);
 				for (int w = 0; w < width; w++)
 				{
 					float curX = startX + w * 0.6f;
@@ -106,7 +104,6 @@ namespace Sheep
 			block.ID = id;
 			foreach (var item in block.OccupiedCells)
 			{
-				Debug.Log($"{item.x},{item.y}");
 				GridController grid = grids[item.x][item.y];
 				BlockController temp = _levelSystem.GetBlock(grid.Peek());
 				if (temp != null) temp.interactable = false;

@@ -16,12 +16,14 @@ namespace Sheep
         PoolSystem _poolSystem;
         LevelSystem _levelSystem;
         LevelModel _levelModel;
+        AudioSystem _audioSystem;
 
         public override void Init()
         {
 			_poolSystem = this.GetSystem<PoolSystem>();
             _levelSystem = this.GetSystem<LevelSystem>();
             _levelModel = this.GetModel<LevelModel>();
+            _audioSystem = this.GetSystem<AudioSystem>();
 
 			this.RegisterEvent<PlaceToContainerEvent>(PlaceToContainer);
             this.RegisterEvent<LevelResurrectionEvent>(LevelResurrection);
@@ -96,6 +98,7 @@ namespace Sheep
                     placeCount--;
                     if (sames.Count == 2)
                     {
+                        _audioSystem.PlaySFX("Eliminate");
                         foreach (var item in sames)
                         {
                             //回收

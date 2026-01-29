@@ -22,7 +22,8 @@ namespace Sheep
 
         private void OnJoinPressed()
         {
-			_view.MaskController(true);
+            _audioSystem.PlaySFX("Click");
+            _view.MaskController(true);
 			this.SendCommand<JoinCommand>();
         }
 

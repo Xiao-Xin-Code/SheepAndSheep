@@ -35,7 +35,9 @@ namespace Sheep
 
         private void OnClosePressed()
         {
+            _audioSystem.PlaySFX("Click");
             gameObject.SetActive(false);
+            this.SendCommand(new MaskVisibleCommand(false));
         }
 
         private void OnAbandonPressed()
@@ -55,12 +57,14 @@ namespace Sheep
 
         private void LevelSetVisible(LevelSetVisibleEvent evt)
         {
+            this.SendCommand(new MaskVisibleCommand(evt.visible));
             gameObject.SetActive(evt.visible);
         }
 
 
         private void OnMusicIsonChanged(bool isOn)
         {
+            _dataModel.MusicIsOn.Value = isOn;
             if (isOn)
             {
                 _audioSystem.LaunchBGM();
@@ -69,12 +73,13 @@ namespace Sheep
             {
                 _audioSystem.StopBGM();
             }
+            _audioSystem.PlaySFX("Click");
 
-            _dataModel.MusicIsOn.Value = isOn;
         }
 
         private void OnSfxIsonChanged(bool isOn)
         {
+            _dataModel.SfxIsOn.Value = isOn;
             if (isOn)
             {
 
@@ -83,8 +88,7 @@ namespace Sheep
             {
                 _poolSystem.RecycleAllSFX();
             }
-
-            _dataModel.SfxIsOn.Value = isOn;
+            _audioSystem.PlaySFX("Click");
         }
 
         private void OnShakeIsonChanged(bool isOn)

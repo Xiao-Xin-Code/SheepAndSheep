@@ -49,11 +49,13 @@ namespace Sheep
 			{
 				_audioSystem.StopBGM();
 			}
-		}
+            _audioSystem.PlaySFX("Click");
+        }
 
         private void OnSfxIsonChanged(bool isOn)
         {
-			if (isOn)
+            _dataModel.SfxIsOn.Value = isOn;
+            if (isOn)
 			{
 
 			}
@@ -61,9 +63,8 @@ namespace Sheep
 			{
 				_poolSystem.RecycleAllSFX();
 			}
-
-			_dataModel.SfxIsOn.Value = isOn;
-		}
+            _audioSystem.PlaySFX("Click");
+        }
 
         private void OnShakeIsonChanged(bool isOn)
         {

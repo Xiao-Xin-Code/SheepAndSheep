@@ -224,9 +224,9 @@ namespace Sheep
 				Place(block);
 
 				//单独设置偏移
-				Debug.Log("调整前" + block.RectTransform.anchoredPosition);
+				//Debug.Log("调整前" + block.RectTransform.anchoredPosition);
 				block.RectTransform.anchoredPosition += dur * (count - 1 - i);
-				Debug.Log("调整后" + block.RectTransform.anchoredPosition);
+				//Debug.Log("调整后" + block.RectTransform.anchoredPosition);
 			}
 		}
 

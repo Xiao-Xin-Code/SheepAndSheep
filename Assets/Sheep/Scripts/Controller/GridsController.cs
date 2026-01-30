@@ -26,11 +26,6 @@ namespace Sheep
 			this.RegisterEvent<RemoveInGridsEvent>(OnRemoveInGrids);
 		}
 
-        private void Start()
-        {
-			gameObject.SetActive(false);
-        }
-
 
         private void OnInitLevel(InitLevelEvent evt)
         {

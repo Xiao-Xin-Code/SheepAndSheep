@@ -7,9 +7,15 @@ namespace Sheep
     {
         GridController[][] grids;
 
+		
         LevelModel _levelModel;
         LevelSystem _levelSystem;
         PoolSystem _poolSystem;
+
+		[SerializeField] GridsView _gridsView;
+
+
+
 
 		public override void Init()
 		{
@@ -20,8 +26,13 @@ namespace Sheep
 			this.RegisterEvent<RemoveInGridsEvent>(OnRemoveInGrids);
 		}
 
+        private void Start()
+        {
+			gameObject.SetActive(false);
+        }
 
-		private void OnInitLevel(InitLevelEvent evt)
+
+        private void OnInitLevel(InitLevelEvent evt)
         {
 			InitializeGrids(_levelModel.width, _levelModel.height, _levelModel.center);
 			id = 0;
@@ -43,12 +54,12 @@ namespace Sheep
                 case "1":
                     string[] startCoord = data[1].Split(',');
                     string[] dur = data[2].Split(',');
-                    CreateHeadUpBlock(int.Parse(data[0]), new Vector2Int(int.Parse(startCoord[0]), int.Parse(startCoord[1])), new Vector2(float.Parse(dur[0]), float.Parse(dur[1])), int.Parse(data[3]));
+					CreateHeadUpBlock(int.Parse(data[0]), new Vector2Int(int.Parse(startCoord[0]), int.Parse(startCoord[1])), new Vector2(float.Parse(dur[0]), float.Parse(dur[1])));
 					break;
                 case "2":
                     string[] size = data[0].Split(',');
 					startCoord = data[1].Split(',');
-                    CreateSpecifiedBlock(int.Parse(size[0]), int.Parse(size[1]), new Vector2Int(int.Parse(startCoord[0]), int.Parse(startCoord[1])), int.Parse(data[2]));
+					CreateSpecifiedBlock(int.Parse(size[0]), int.Parse(size[1]), new Vector2Int(int.Parse(startCoord[0]), int.Parse(startCoord[1])));
 					break;
             }
         }
@@ -73,22 +84,30 @@ namespace Sheep
 		/// <param name="center"></param>
 		private void InitializeGrids(int width, int height, Vector2 center)
 		{
-			Transform block = Resources.Load<Transform>("Grid");
-
 			grids = new GridController[height][];
-            float startY = height * 0.6f / 2 - 0.3f;
-			float startX = -width * 0.6f / 2 + 0.3f;
+			BlockController block = _poolSystem.GetBlock();
+			float size = block.RectTransform.rect.width;
+			_poolSystem.RecycleBlock(block);
+			float needSize = size / 2;
+			float halfSize = needSize / 2;
+			int halfcount_h = height / 2;
+			int halfcount_w = width / 2;
+			int modh = height % 2;
+			int modw = width % 2;
 
-			for (int h = 0; h < height; h++)
+			float startY = halfcount_h * needSize - (modh == 0 ? halfSize : 0);
+			float startX = -halfcount_w * needSize + (modw == 0 ? halfSize : 0);
+
+			
+
+			for(int h = 0; h < height; h++)
 			{
-				float curY = startY - h * 0.6f;
+				float curY = startY - h * needSize;
 				grids[h] = new GridController[width];
 				for (int w = 0; w < width; w++)
 				{
-					float curX = startX + w * 0.6f;
+					float curX = startX + w * needSize;
 					grids[h][w] = new GridController(new Vector2(curX, curY));
-					//Transform temp = GameObject.Instantiate(block);
-					//temp.position = new Vector2(curX, curY);
 				}
 			}
 		}
@@ -97,7 +116,7 @@ namespace Sheep
 		/// 放置指定
 		/// </summary>
 		/// <param name="block"></param>
-		private void Place(BlockController block, int deep)
+		private void Place(BlockController block)
 		{
 			Vector2 position = Vector2.zero;
 			int id = this.id++;//获取ID
@@ -114,7 +133,8 @@ namespace Sheep
 			}
 			_levelSystem.AddBlock(id, block);
 			position /= 4;
-			block.transform.position = new Vector3(position.x, position.y, deep);
+
+			block.RectTransform.anchoredPosition = position;
 		}
 
 		/// <summary>
@@ -161,7 +181,7 @@ namespace Sheep
 		/// <param name="height"></param>
 		/// <param name="startCoord"></param>
 		/// <param name="deep"></param>
-		private void CreateSpecifiedBlock(int width, int height, Vector2Int startCoord, int deep)
+		private void CreateSpecifiedBlock(int width, int height, Vector2Int startCoord)
 		{
 			for (int i = 0; i < width; i++)
 			{
@@ -169,6 +189,7 @@ namespace Sheep
 				{
 					//创建block
 					BlockController block = _poolSystem.GetBlock();
+					block.RectTransform.SetParent(transform, false);
 					block.interactable = true;
 					block.OccupiedCells = new Vector2Int[4]
 					{
@@ -178,7 +199,7 @@ namespace Sheep
 						startCoord + new Vector2Int(i * 2,j * 2) + new Vector2Int(1,1)
 					};
 
-                    Place(block, deep);
+                    Place(block);
                 }
 			}
 		}
@@ -190,11 +211,12 @@ namespace Sheep
 		/// <param name="startCoord"></param>
 		/// <param name="dur"></param>
 		/// <param name="startDeep"></param>
-		private void CreateHeadUpBlock(int count, Vector2Int startCoord, Vector3 dur, int startDeep)
+		private void CreateHeadUpBlock(int count, Vector2Int startCoord, Vector2 dur)
 		{
 			for (int i = 0; i < count; i++)
 			{
 				BlockController block = _poolSystem.GetBlock();
+				block.RectTransform.SetParent(transform, false);
                 block.interactable = true;
                 block.OccupiedCells = new Vector2Int[4]
 				{
@@ -204,10 +226,12 @@ namespace Sheep
 					startCoord + new Vector2Int(1,1)
 				};
 
-				Place(block, startDeep - i);
-				
+				Place(block);
+
 				//单独设置偏移
-				block.transform.position += dur * (count - 1 - i);
+				Debug.Log("调整前" + block.RectTransform.anchoredPosition);
+				block.RectTransform.anchoredPosition += dur * (count - 1 - i);
+				Debug.Log("调整后" + block.RectTransform.anchoredPosition);
 			}
 		}
 

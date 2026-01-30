@@ -28,6 +28,11 @@ namespace Sheep
             _view.RegisterClosePressedEvent(OnClosePressed);
             this.RegisterEvent<JoinEvent>(JoinCallBack);
 
+			
+		}
+
+        private void Start()
+        {
 			gameObject.SetActive(false);
 		}
 
@@ -48,6 +53,7 @@ namespace Sheep
             this.SendCommand(new LaunchTransitionCommand(Hide, 1));
 			_poolSystem.RecycleAllBlock();
 			_levelSystem.ClearBlocks();
+            this.SendCommand<ClearContainerCommand>();
 			this.SendCommand<LaunchLevelCommand>();
         }
 

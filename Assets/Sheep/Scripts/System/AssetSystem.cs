@@ -32,7 +32,7 @@ namespace Sheep
 			_dataModel.Theme.RegisterWithInitValue(OnThemeChanged);
 
 			sfx = Resources.Load<SFXController>("SFX");
-            block = Resources.Load<BlockController>("Item");
+            block = Resources.Load<BlockController>("Block");
 			
 
 			if(Application.platform == RuntimePlatform.Android)

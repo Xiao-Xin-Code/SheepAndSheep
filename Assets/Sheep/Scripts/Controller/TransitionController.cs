@@ -17,10 +17,13 @@ namespace Sheep
             _levelModel = this.GetModel<LevelModel>();
             _audioSystem = this.GetSystem<AudioSystem>();
             this.RegisterEvent<LaunchTransitionEvent>(LaunchTransition);
-
-            gameObject.SetActive(false);
-            
         }
+
+
+        private void Start()
+        {
+			gameObject.SetActive(false);
+		}
 
 
 
@@ -49,18 +52,6 @@ namespace Sheep
                 }
             });
             sequence.Play();
-            //_view.RectTransform.DOAnchorPosX(-_view.RectTransform.rect.width, 1).SetEase(Ease.Linear).OnComplete(() =>
-            //{
-            //    evt.Trigger();
-            //    if (_levelModel.isLevelOver)
-            //    {
-            //        TransitionEnd();
-            //    }
-            //    else
-            //    {
-            //        StartCoroutine(WaitLevelLoadOver());
-            //    }
-            //});
         }
 
         private void TransitionEnd()

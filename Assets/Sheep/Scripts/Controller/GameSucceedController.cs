@@ -18,8 +18,13 @@ namespace Sheep
             _levelSystem = this.GetSystem<LevelSystem>();
             this.RegisterEvent<GameSucceedEvent>(OnGameSucceed);
             _gameSucceedView.RegisterBackGroupPressed(OnBackGroupPressed);
-            gameObject.SetActive(false);
+            
         }
+
+        private void Start()
+        {
+			gameObject.SetActive(false);
+		}
 
 
         private void OnGameSucceed(GameSucceedEvent evt)

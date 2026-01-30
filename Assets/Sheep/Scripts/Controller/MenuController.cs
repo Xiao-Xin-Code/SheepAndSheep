@@ -19,8 +19,12 @@ namespace Sheep
             _view.RegisterSetPressedEvent(OpenSetting);
             _view.RegisterExitEvent(Exit);
 
-            gameObject.SetActive(false);
         }
+
+        private void Start()
+        {
+			gameObject.SetActive(false);
+		}
 
 
         private void UnFoldMenu(UnFoldMenuEvent evt)

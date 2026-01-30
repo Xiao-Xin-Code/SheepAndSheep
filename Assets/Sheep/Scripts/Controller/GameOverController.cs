@@ -27,8 +27,13 @@ namespace Sheep
             _gameOverView.RegisterCancelPressed(OnCancelPressed);
 
 			this.RegisterEvent<GameOverEvent>(OnGameOver);
-            gameObject.SetActive(false);
+            
         }
+
+        private void Start()
+        {
+			gameObject.SetActive(false);
+		}
 
 
 

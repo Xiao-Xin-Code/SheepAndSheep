@@ -31,7 +31,7 @@ namespace Sheep
             this.RegisterEvent<RemoveInExtendEvent>(RemoveInExtend);
         }
 
-        public int placeCount = 0;
+        int placeCount = 0;
 		private Dictionary<BlockController, Tweener> animMap = new Dictionary<BlockController, Tweener>();
 
         private void Place(BlockController block)

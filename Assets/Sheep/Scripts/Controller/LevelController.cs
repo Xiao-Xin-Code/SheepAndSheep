@@ -10,13 +10,11 @@ namespace Sheep
 
         LevelSystem _levelSystem;
 		AssetSystem _assetSystem;
-		DataModel _dataModel;
 		LevelModel _levelModel;
 
         public override void Init()
         {
 			_levelModel = this.GetModel<LevelModel>();
-			_dataModel = this.GetModel<DataModel>();
             _levelSystem = this.GetSystem<LevelSystem>();
 			_assetSystem = this.GetSystem<AssetSystem>();
 			this.RegisterEvent<LaunchLevelEvent>(OnLaunchLevel);
@@ -25,9 +23,11 @@ namespace Sheep
 			_levelModel.levelState.Register(OnLevelStateChanged);
 			_levelView.RegisterSetPressed(OnLevelSetPressed);
 
-			_levelView.gameObject.SetActive(false);
-			gameObject.SetActive(false);
+		}
 
+        private void Start()
+        {
+			gameObject.SetActive(false);
 		}
 
 
@@ -38,8 +38,8 @@ namespace Sheep
 			string[] level = _levelModel.levelup ? _assetSystem.GetLevel() : _assetSystem.GetDefaultLevel();
 			string[] split = level[0].Split('#')[1].Split('|');
 			_levelModel.blockCount = int.Parse(split[0]);
-			_levelModel.width = int.Parse(split[1].Split(',')[0]);
-			_levelModel.height = int.Parse(split[1].Split(',')[1]);
+			_levelModel.height = int.Parse(split[1].Split(',')[0]);
+			_levelModel.width = int.Parse(split[1].Split(',')[1]);
 			_levelModel.center = new Vector2(int.Parse(split[2].Split(',')[0]), int.Parse(split[2].Split(',')[1]));
 			_levelModel.level = level;
 			_levelModel.levelState.Value = LevelState.Runtime;

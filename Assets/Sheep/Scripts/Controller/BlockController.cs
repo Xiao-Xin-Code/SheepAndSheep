@@ -14,6 +14,8 @@ namespace Sheep
 		#region ÊôÐÔ
 		public bool interactable { get => _entity.Interactable.Value; set => _entity.Interactable.Value = value; }
 
+		public RectTransform RectTransform { get => _view.RectTransform; }
+
 		public string theme { get => _entity.theme; set => _entity.theme = value; }
 
 		public string content { get => _entity.content; set => _entity.content = value; }
@@ -26,14 +28,14 @@ namespace Sheep
 
 		private void InteractableChanged(bool isOn)
 		{
-			_view.MaskRenderer.enabled = !isOn;
+			_view.MaskImage.enabled = !isOn;
 		}
 
 		public void UpdateIcon()
 		{
-			_view.BgRenderer.sprite = _assetSystem.BgSprite;
-			_view.MaskRenderer.sprite = _assetSystem.MaskSprite;
-			_view.IconRenderer.sprite = _assetSystem.GetIcon(_entity.content);
+			_view.BgImage.sprite = _assetSystem.BgSprite;
+			_view.MaskImage.sprite = _assetSystem.MaskSprite;
+			_view.IconImage.sprite = _assetSystem.GetIcon(_entity.content);
 		}
 
 

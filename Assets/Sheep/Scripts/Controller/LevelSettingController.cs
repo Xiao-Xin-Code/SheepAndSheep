@@ -29,10 +29,12 @@ namespace Sheep
             _levelSettingView.RegiterSfxIsonChanged(OnSfxIsonChanged);
             _levelSettingView.RegisterShakeIsonChanged(OnShakeIsonChanged);
 
-            gameObject.SetActive(false);
         }
 
-
+        private void Start()
+        {
+			gameObject.SetActive(false);
+		}
 
 
         private void OnClosePressed()

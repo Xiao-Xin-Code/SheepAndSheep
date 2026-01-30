@@ -17,8 +17,14 @@ namespace Sheep
             _view.RegisterMenuPressedEvent(OnMenuPressed);
             this.RegisterEvent<HomeViewVisibleEvent>(HomeViewVisible);
             this.RegisterEvent<MaskVisibleEvent>(MaskVisible);
-            gameObject.SetActive(false);
+           
         }
+
+        private void Start()
+        {
+			gameObject.SetActive(false);
+		}
+
 
         private void OnJoinPressed()
         {

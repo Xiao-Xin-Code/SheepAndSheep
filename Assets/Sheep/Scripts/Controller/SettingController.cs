@@ -32,9 +32,13 @@ namespace Sheep
 			_settingView.SetShakeIsonWithoutNotify(_dataModel.ShakeIsOn.Value);
 			_settingView.SetSkipIsonWithoutNotify(_dataModel.skipFirstLevel);
 
-
-            gameObject.SetActive(false);
         }
+
+
+        private void Start()
+        {
+			gameObject.SetActive(false);
+		}
 
 
 

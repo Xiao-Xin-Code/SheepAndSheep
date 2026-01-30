@@ -29,7 +29,7 @@ namespace Sheep
 
         private void LaunchTransition(LaunchTransitionEvent evt)
         {
-			_view.RectTransform.anchoredPosition = Vector2.zero;
+            _view.RectTransform.anchoredPosition = new Vector2(_view.RectTransform.rect.width, 0);
 			_view.SheepGroup.SetActive(evt.state == 1);
 			_view.LevelUp.SetActive(evt.state == 2);
 			gameObject.SetActive(true);
@@ -37,7 +37,7 @@ namespace Sheep
 
             //ÒÆ¶¯¸²¸Ç
             Sequence sequence = DOTween.Sequence();
-            sequence.Append(_view.RectTransform.DOAnchorPosX(-_view.RectTransform.rect.width, 1).SetEase(Ease.Linear));
+            sequence.Append(_view.RectTransform.DOAnchorPosX(0, 1).SetEase(Ease.Linear));
             if(evt.state == 2) sequence.AppendInterval(0.5f);
             sequence.OnComplete(() =>
             {
@@ -56,7 +56,7 @@ namespace Sheep
 
         private void TransitionEnd()
         {
-            _view.RectTransform.DOAnchorPosX(-2 * _view.RectTransform.rect.width, 1).SetEase(Ease.Linear).OnComplete(() =>
+            _view.RectTransform.DOAnchorPosX(-_view.RectTransform.rect.width, 1).SetEase(Ease.Linear).OnComplete(() =>
             {
                 gameObject.SetActive(false);
             });

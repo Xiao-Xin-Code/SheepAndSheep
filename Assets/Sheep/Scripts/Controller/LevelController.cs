@@ -10,12 +10,14 @@ namespace Sheep
 
         LevelSystem _levelSystem;
 		AssetSystem _assetSystem;
+		AudioSystem _audioSystem;
 		LevelModel _levelModel;
 
         public override void Init()
         {
 			_levelModel = this.GetModel<LevelModel>();
             _levelSystem = this.GetSystem<LevelSystem>();
+			_audioSystem = this.GetSystem<AudioSystem>();
 			_assetSystem = this.GetSystem<AssetSystem>();
 			this.RegisterEvent<LaunchLevelEvent>(OnLaunchLevel);
 			this.RegisterEvent<LevelVisibleEvent>(LevelVisible);
@@ -81,7 +83,8 @@ namespace Sheep
 
 		private void OnLevelSetPressed()
 		{
-			this.SendCommand(new LevelSetVisibleCommand(true));
+            _audioSystem.PlaySFX("Click");
+            this.SendCommand(new LevelSetVisibleCommand(true));
 		}
 
 		private void LevelVisible(LevelVisibleEvent evt)

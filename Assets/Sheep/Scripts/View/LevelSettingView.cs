@@ -78,6 +78,20 @@ namespace Sheep
         #endregion
 
 
+        public void SetMusicIsonWithoutNotify(bool isOn)
+        {
+            musicIson?.SetIsOnWithoutNotify(isOn);
+        }
+
+        public void SetSfxIsonWithoutNotify(bool isOn)
+        {
+            sfxIson?.SetIsOnWithoutNotify(isOn);
+        }
+
+        public void SetShakeIsonWithoutNotify(bool isOn)
+        {
+            shakeIson?.SetIsOnWithoutNotify(isOn);
+        }
     }
 
 }

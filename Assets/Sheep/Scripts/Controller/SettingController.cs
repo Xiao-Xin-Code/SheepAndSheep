@@ -72,24 +72,34 @@ namespace Sheep
 
         private void OnShakeIsonChanged(bool isOn)
         {
-
+           
         }
 
         private void OnSkipLevelChanged(bool isOn)
         {
-
+            _dataModel.skipFirstLevel = isOn;
+            _audioSystem.PlaySFX("Click");
         }
 
 
 		private void OnClosePressed()
 		{
-			gameObject.SetActive(false);
+            _audioSystem.PlaySFX("Click");
+            gameObject.SetActive(false);
             this.SendCommand(new MaskVisibleCommand(false));
         }
 
 
 		private void SettingVisible(SettingVisibleEvent evt)
 		{
+            if (evt.visible)
+            {
+                _settingView.SetMusicIsonWithoutNotify(_dataModel.MusicIsOn.Value);
+                _settingView.SetSfxIsonWithoutNotify(_dataModel.SfxIsOn.Value);
+                _settingView.SetShakeIsonWithoutNotify(_dataModel.ShakeIsOn.Value);
+                _settingView.SetSkipIsonWithoutNotify(_dataModel.skipFirstLevel);
+            }
+
 			gameObject.SetActive(evt.visible);
             this.SendCommand(new MaskVisibleCommand(evt.visible));
         }

@@ -50,6 +50,7 @@ namespace Sheep
         private void OnLaunchPressed()
         {
             _audioSystem.StopBGM();
+            _audioSystem.PlaySFX("Click");
             this.SendCommand(new LaunchTransitionCommand(Hide, 1));
 			_poolSystem.RecycleAllBlock();
 			_levelSystem.ClearBlocks();
@@ -59,6 +60,7 @@ namespace Sheep
 
         private void OnClosePressed()
         {
+            _audioSystem.PlaySFX("Click");
             gameObject.SetActive(false);
             this.SendCommand(new MaskVisibleCommand(false));
         }

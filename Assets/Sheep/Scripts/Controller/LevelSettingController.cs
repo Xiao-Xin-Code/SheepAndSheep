@@ -65,6 +65,13 @@ namespace Sheep
 
         private void LevelSetVisible(LevelSetVisibleEvent evt)
         {
+            if (evt.visible)
+            {
+                _levelSettingView.SetMusicIsonWithoutNotify(_dataModel.MusicIsOn.Value);
+                _levelSettingView.SetSfxIsonWithoutNotify(_dataModel.SfxIsOn.Value);
+                _levelSettingView.SetShakeIsonWithoutNotify(_dataModel.ShakeIsOn.Value);
+            }
+
             this.SendCommand(new MaskVisibleCommand(evt.visible));
             gameObject.SetActive(evt.visible);
         }
@@ -72,15 +79,15 @@ namespace Sheep
 
         private void OnMusicIsonChanged(bool isOn)
         {
-            _dataModel.MusicIsOn.Value = isOn;
+              _dataModel.MusicIsOn.Value = isOn;
             if (isOn)
-            {
-                _audioSystem.LaunchBGM();
-            }
-            else
-            {
-                _audioSystem.StopBGM();
-            }
+			{
+				_audioSystem.PlayBGM("BgMusic");
+			}
+			else
+			{
+				_audioSystem.StopBGM();
+			}
             _audioSystem.PlaySFX("Click");
 
         }
@@ -90,7 +97,16 @@ namespace Sheep
             _dataModel.SfxIsOn.Value = isOn;
             if (isOn)
             {
+                _dataModel.SfxIsOn.Value = isOn;
+                if (isOn)
+                {
 
+                }
+                else
+                {
+                    _poolSystem.RecycleAllSFX();
+                }
+                _audioSystem.PlaySFX("Click");
             }
             else
             {

@@ -103,7 +103,7 @@ namespace Sheep
 				{
 					float curX = startX + w * needSize;
 					grids[h][w] = new GridController(new Vector2(curX, curY));
-				}
+                }
 			}
 		}
 
@@ -123,7 +123,6 @@ namespace Sheep
 				if (temp != null) temp.interactable = false;
 
 				grid.Push(id);
-
 				position += grid.Location;
 			}
 			_levelSystem.AddBlock(id, block);
@@ -185,6 +184,7 @@ namespace Sheep
 					//创建block
 					BlockController block = _poolSystem.GetBlock();
 					block.RectTransform.SetParent(transform, false);
+					block.RectTransform.localScale = Vector2.one;
 					block.interactable = true;
 					block.OccupiedCells = new Vector2Int[4]
 					{
@@ -212,6 +212,7 @@ namespace Sheep
 			{
 				BlockController block = _poolSystem.GetBlock();
 				block.RectTransform.SetParent(transform, false);
+                block.RectTransform.localScale = Vector2.one;
                 block.interactable = true;
                 block.OccupiedCells = new Vector2Int[4]
 				{
@@ -224,9 +225,7 @@ namespace Sheep
 				Place(block);
 
 				//单独设置偏移
-				//Debug.Log("调整前" + block.RectTransform.anchoredPosition);
 				block.RectTransform.anchoredPosition += dur * (count - 1 - i);
-				//Debug.Log("调整后" + block.RectTransform.anchoredPosition);
 			}
 		}
 

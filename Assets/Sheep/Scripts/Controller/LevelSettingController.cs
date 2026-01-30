@@ -10,6 +10,7 @@ namespace Sheep
 
         AudioSystem _audioSystem;
         PoolSystem _poolSystem;
+        LevelSystem _levelSystem;
         DataModel _dataModel;
 
 
@@ -17,6 +18,7 @@ namespace Sheep
         {
             _audioSystem = this.GetSystem<AudioSystem>();
             _poolSystem = this.GetSystem<PoolSystem>();
+            _levelSystem = this.GetSystem<LevelSystem>();
             _dataModel = this.GetModel<DataModel>();
 
             this.RegisterEvent<LevelSetVisibleEvent>(LevelSetVisible);
@@ -46,6 +48,10 @@ namespace Sheep
 			_audioSystem.PlaySFX("Click");
 			this.SendCommand(new LaunchTransitionCommand(() =>
 			{
+				_poolSystem.RecycleAllBlock();//回收使用的Block
+				_levelSystem.ClearBlocks();//清空关卡中的Block
+                this.SendCommand<ClearContainerCommand>();
+
 				//关闭level
 				this.SendCommand(new LevelVisibleCommand(false));
 				this.SendCommand(new HomeViewVisibleCommand(true));

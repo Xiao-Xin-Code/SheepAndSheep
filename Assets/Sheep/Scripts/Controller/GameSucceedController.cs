@@ -8,10 +8,14 @@ namespace Sheep
         [SerializeField] GameSucceedView _gameSucceedView;
 
         AudioSystem _audioSystem;
+        PoolSystem _poolSystem;
+        LevelSystem _levelSystem;
 
         public override void Init()
         {
             _audioSystem = this.GetSystem<AudioSystem>();
+            _poolSystem = this.GetSystem<PoolSystem>();
+            _levelSystem = this.GetSystem<LevelSystem>();
             this.RegisterEvent<GameSucceedEvent>(OnGameSucceed);
             _gameSucceedView.RegisterBackGroupPressed(OnBackGroupPressed);
             gameObject.SetActive(false);
@@ -20,8 +24,9 @@ namespace Sheep
 
         private void OnGameSucceed(GameSucceedEvent evt)
         {
-            //更新成就
-            gameObject.SetActive(true);
+			this.SendCommand(new MaskVisibleCommand(true));
+			//更新成就
+			gameObject.SetActive(true);
         }
 
         private void OnBackGroupPressed()
@@ -30,8 +35,12 @@ namespace Sheep
             _audioSystem.PlaySFX("Click");
             this.SendCommand(new LaunchTransitionCommand(() =>
             {
-                //关闭level
-                this.SendCommand(new LevelVisibleCommand(false));
+				_poolSystem.RecycleAllBlock();//回收使用的Block
+				_levelSystem.ClearBlocks();//清空关卡中的Block
+				this.SendCommand<ClearContainerCommand>();
+
+				//关闭level
+				this.SendCommand(new LevelVisibleCommand(false));
                 this.SendCommand(new HomeViewVisibleCommand(true));
                 this.SendCommand(new MaskVisibleCommand(false));
                 gameObject.SetActive(false);

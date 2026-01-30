@@ -145,6 +145,7 @@ namespace Sheep
                                         _levelSystem.ClearBlocks();//清空关卡中的Block
                                         placeCount = 0;
                                         vessel.Clear();//清空容器中的Block
+                                        extendVessel.Clear();
                                         this.SendCommand<LaunchLevelCommand>();
                                         //启动新的
                                     }

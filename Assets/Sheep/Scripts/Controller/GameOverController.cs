@@ -9,13 +9,18 @@ namespace Sheep
         [SerializeField] GameOverView _gameOverView;
 
         AudioSystem _audioSystem;
+        PoolSystem _poolSystem;
+        LevelSystem _levelSystem;
         LevelModel _levelModel;
 
 
         public override void Init()
         {
             _audioSystem = this.GetSystem<AudioSystem>();
-            _levelModel = this.GetModel<LevelModel>();
+			_poolSystem = this.GetSystem<PoolSystem>();
+            _levelSystem = this.GetSystem<LevelSystem>();
+			_levelModel = this.GetModel<LevelModel>();
+            
 
 
             _gameOverView.RegisterResurrectionPressed(OnResurrectionPressed);
@@ -30,7 +35,8 @@ namespace Sheep
 
         private void OnGameOver(GameOverEvent evt)
         {
-            _gameOverView.SetResurrection(evt.canResurrection);
+			this.SendCommand(new MaskVisibleCommand(true));
+			_gameOverView.SetResurrection(evt.canResurrection);
             gameObject.SetActive(true);
         }
 
@@ -50,6 +56,10 @@ namespace Sheep
 			_audioSystem.PlaySFX("Click");
 			this.SendCommand(new LaunchTransitionCommand(() =>
 			{
+				_poolSystem.RecycleAllBlock();//回收使用的Block
+				_levelSystem.ClearBlocks();//清空关卡中的Block
+				this.SendCommand<ClearContainerCommand>();
+
 				//关闭level
 				this.SendCommand(new LevelVisibleCommand(false));
 				this.SendCommand(new HomeViewVisibleCommand(true));
